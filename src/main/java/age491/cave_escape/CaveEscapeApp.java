@@ -1,4 +1,6 @@
 package age491.cave_escape;
+import java.util.ArrayList;
+
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -12,6 +14,7 @@ public class CaveEscapeApp extends Application {
 	Scene scene;
 	Canvas canvas;
 	GraphicsContext gc;
+	ArrayList<GameObject> objects = new ArrayList<GameObject>();
 	public static void main(String[] args)
 	{
 		launch(args);

@@ -1,6 +1,7 @@
 package age491.cave_escape;
 
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 
 public class GameObject {
 	protected Image img;
@@ -19,7 +20,19 @@ public class GameObject {
 	{
 		if(img!=null)
 		{
-			gc.drawImage(img,  x, y,  30,30);
+			gc.drawImage(img,  x, y,  100,100);
 		}
+	}
+	private double getX() {
+		return x;
+	}
+	 void setX(double x) {
+		this.x = x;
+	}
+	private double getY() {
+		return y;
+	}
+	void setY(double y) {
+		this.y = y;
 	}
 }

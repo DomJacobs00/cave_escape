@@ -1,7 +1,7 @@
 package age491.cave_escape;
 import java.util.ArrayList;
 
-import age491.factoryapp.GameObject;
+
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -53,7 +53,7 @@ public class CaveEscapeApp extends Application {
 		scene.setOnKeyPressed(event -> {
 			if (event.getCode() == KeyCode.W)
 			{
-				main.setY(x -= moveSpeed);
+				main.setY(y -= moveSpeed);
 			}
 			else if(event.getCode() == KeyCode.S)
 			{
@@ -80,8 +80,9 @@ public class CaveEscapeApp extends Application {
 					
 					
 				}
-				main.setX(x);
 				main.setY(y);
+				main.setX(x);
+				
 				
 			}
 		};

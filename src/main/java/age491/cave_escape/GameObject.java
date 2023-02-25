@@ -7,6 +7,7 @@ public class GameObject {
 	protected Image img;
 	protected double x, y;
 	protected GraphicsContext gc;
+	int height;
 	
 	public GameObject(double x, double y, GraphicsContext gc)
 	{
@@ -14,6 +15,8 @@ public class GameObject {
 		this.x = x;
 		this.y = y;
 		this.gc = gc;
+		height = 100;
+		
 		
 	}
 	public void update()
@@ -34,5 +37,9 @@ public class GameObject {
 	}
 	void setY(double y) {
 		this.y = y;
+	}
+	int getHeight()
+	{
+		return height;
 	}
 }

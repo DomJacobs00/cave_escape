@@ -1,4 +1,5 @@
 package age491.cave_escape;
+
 import java.util.ArrayList;
 
 
@@ -29,6 +30,9 @@ public class CaveEscapeApp extends Application {
 	
 	double x = 0.0, y=0.0;
 	double moveSpeed = 5.0;
+	double jumpSpeed = 10.0;
+	double gravity = 0.5;
+	boolean isJumping = false;
 	
 	@Override
 	public void start(Stage primaryStage) throws Exception
@@ -50,10 +54,11 @@ public class CaveEscapeApp extends Application {
 		objects.add(factory.createProduct("hero", x, y));
 		
 		GameObject main = objects.get(0);
-		scene.setOnKeyPressed(event -> {
-			if (event.getCode() == KeyCode.W)
+		scene.setOnKeyPressed(event -> {    // should be moved to its own class
+			if (event.getCode() == KeyCode.W && !isJumping)
 			{
-				main.setY(y -= moveSpeed);
+				isJumping = true;
+				//main.setY(y -= moveSpeed);
 			}
 			else if(event.getCode() == KeyCode.S)
 			{
@@ -70,7 +75,7 @@ public class CaveEscapeApp extends Application {
 		});
 		AnimationTimer timer = new AnimationTimer()
 		{
-
+			double velocityY = 0.0;
 			@Override
 			public void handle(long now) {
 				gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
@@ -80,11 +85,31 @@ public class CaveEscapeApp extends Application {
 					
 					
 				}
-				main.setY(y);
+				
+				
+				
+			
+				if(isJumping)
+				{
+					// Apply gravity to the main object if it is jumping
+					velocityY -= gravity;
+					y += velocityY;
+					
+					// If the main object hits the ground, stop the jump not working
+					if(y >= canvas.getHeight() - main.getHeight())
+					{
+						y = canvas.getHeight()-main.getHeight();
+						velocityY = 0.0;
+						isJumping = false;
+					}
+					else
+					{
+						main.setY(y);
+					}
+				}
 				main.setX(x);
-				
-				
 			}
+			
 		};
 		
 		timer.start();

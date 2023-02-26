@@ -33,7 +33,7 @@ public class GameObject {
 	 void setX(double x) {
 		this.x = x;
 	}
-	private double getY() {
+	 double getY() {
 		return y;
 	}
 	void setY(double y) {

@@ -32,7 +32,7 @@ public class CaveEscapeApp extends Application {
 	double x = 0.0, y=0.0;
 	double moveSpeed = 5.0;
 	double jumpSpeed = 10.0;
-	double gravity = 0.5;
+	double gravity = 0.7;
 	boolean isJumping = false;
 	double velocityY = 0.0;
 	@Override
@@ -65,7 +65,8 @@ public class CaveEscapeApp extends Application {
 		scene.setOnKeyPressed(event -> {    // should be moved to its own class
 			if (event.getCode() == KeyCode.W && !isJumping)
 			{
-				;
+				isJumping = true;
+				velocityY = jumpSpeed;
 			}
 			else if(event.getCode() == KeyCode.A)
 			{
@@ -78,24 +79,49 @@ public class CaveEscapeApp extends Application {
 		});
 		AnimationTimer timer = new AnimationTimer()
 		{
-			double velocityY = 0.0;
+			
 			@Override
 			public void handle(long now) {
 				gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+				double heroHeight = objects.get(0).getHeight();
+				double groundTop = canvas.getHeight();
 				
 				// drawing the gorund for the level
 				for(GameObject gr:ground)
 				{
+					if (gr.getY() < groundTop) {
+				        groundTop = gr.getY();
+				    }
 					
 					gr.update();
+					
 				}
+				double heroY = groundTop - heroHeight + 20;
+				
+				if(isJumping == false)
+				{
+					y = heroY;
+				}
+				else
+				{
+					velocityY -= gravity;
+					y -= velocityY;
+					if(y >= heroY)
+					{
+						y = heroY;
+						velocityY = 0.0;
+						isJumping = false;
+					}
+				}
+				objects.get(0).setY(y);
+				objects.get(0).setX(x);
 				
 				for(GameObject obj:objects)
 				{
 					obj.update();	
 				}
-				main.setY(y);
-				main.setX(x);
+				
+				
 			}
 			
 		};

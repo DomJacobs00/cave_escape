@@ -5,7 +5,7 @@ import javafx.scene.image.Image;
 
 public class GameObject {
 	protected Image img;
-	protected double x, y;
+	protected double x,y;
 	protected GraphicsContext gc;
 	int height;
 	
@@ -26,6 +26,7 @@ public class GameObject {
 			gc.drawImage(img,  x, y,  100,100);
 		}
 	}
+	
 	private double getX() {
 		return x;
 	}

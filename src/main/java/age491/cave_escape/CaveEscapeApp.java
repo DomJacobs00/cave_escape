@@ -19,6 +19,7 @@ public class CaveEscapeApp extends Application {
 	Canvas canvas;
 	GraphicsContext gc;
 	ArrayList<GameObject> objects = new ArrayList<GameObject>();
+	ArrayList<GameObject> ground = new ArrayList<GameObject>();
 	Factory factory;
 	
 	public static void main(String[] args)
@@ -33,14 +34,14 @@ public class CaveEscapeApp extends Application {
 	double jumpSpeed = 10.0;
 	double gravity = 0.5;
 	boolean isJumping = false;
-	
+	int rezX = 800, rezY = 600;
 	@Override
 	public void start(Stage primaryStage) throws Exception
 	{
-	
+		
 		root = new Pane();
-		scene = new Scene(root,800,600);
-		canvas = new Canvas(800,600);
+		scene = new Scene(root,rezX,rezY);
+		canvas = new Canvas(rezX,rezY);
 		gc = canvas.getGraphicsContext2D();
 		
 		
@@ -52,6 +53,14 @@ public class CaveEscapeApp extends Application {
 		gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
 		factory = new Factory(gc);
 		objects.add(factory.createProduct("hero", x, y));
+		// generating the ground for the level
+		for(int t=0; t<8; t++)
+		{
+			double gx = t*100, gy=500;
+			
+			ground.add(factory.createProduct("groundLow", gx, gy));
+		}
+		
 		
 		GameObject main = objects.get(0);
 		scene.setOnKeyPressed(event -> {    // should be moved to its own class
@@ -81,9 +90,12 @@ public class CaveEscapeApp extends Application {
 				gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
 				for(GameObject obj:objects)
 				{
-					obj.update();
-					
-					
+					obj.update();	
+				}
+				// drawing the gorund for the level
+				for(GameObject gr:ground)
+				{
+					gr.update();
 				}
 				
 				

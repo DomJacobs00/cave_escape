@@ -10,6 +10,10 @@ public class Factory implements FactoryIF {
 		{
 			return new Hero(x,y,gc);
 		}
+		if(discrim.equals("groundLow"))
+		{
+			return new GroundGenerator(x, y,gc);
+		}
 		return null;
 	}
 	public Factory(GraphicsContext gc) {

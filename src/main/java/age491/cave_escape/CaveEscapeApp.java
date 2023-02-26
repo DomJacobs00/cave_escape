@@ -18,8 +18,8 @@ public class CaveEscapeApp extends Application {
 	Scene scene;
 	Canvas canvas;
 	GraphicsContext gc;
-	ArrayList<GameObject> objects = new ArrayList<GameObject>();
-	ArrayList<GameObject> ground = new ArrayList<GameObject>();
+	ArrayList<GameObject> objects = new ArrayList<GameObject>(); // stores all the characters ( main character and enemies)
+	ArrayList<GameObject> ground = new ArrayList<GameObject>(); // stores all objects that create the ground
 	Factory factory;
 	
 	public static void main(String[] args)
@@ -53,29 +53,38 @@ public class CaveEscapeApp extends Application {
 		gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
 		factory = new Factory(gc);
 		
-		// generating the ground for the level
+		/**
+		 * generating the ground for the level
+		 * the ground consists of GroundGenerator objects that are used as 100x100 tiles to be placed on the ground level.
+		 * Later the tiles will be randomly generated to make the terrain of the level more different
+		 */
 		for(int t=0; t<8; t++)
 		{
 			double gx = t*100, gy = 500;
 			
 			ground.add(factory.createProduct("groundLow", gx, gy));
 		}
+		// Addition of a controllable character hero
 		objects.add(factory.createProduct("hero", x, y));
-		GameObject main = objects.get(0);
-		scene.setOnKeyPressed(event -> {    // should be moved to its own class
-			if (event.getCode() == KeyCode.W && !isJumping)
+		
+		GameObject main = objects.get(0); // Accessing the character form the list of objects
+		
+		// movement for the character ( will be moved to separate class maybe?)
+		scene.setOnKeyPressed(event -> {    
+			if (event.getCode() == KeyCode.W && !isJumping) // w is binded to make the character jump (move verticaly up)
 			{
 				isJumping = true;
 				velocityY = jumpSpeed;
 			}
-			else if(event.getCode() == KeyCode.A)
+			else if(event.getCode() == KeyCode.A) // movement to right
 			{
 				main.setX(x -= moveSpeed);
 			}
-			else if(event.getCode() == KeyCode.D)
+			else if(event.getCode() == KeyCode.D) // movement to left
 			{
 				main.setX(x += moveSpeed);
 			}
+			
 		});
 		AnimationTimer timer = new AnimationTimer()
 		{
@@ -83,21 +92,28 @@ public class CaveEscapeApp extends Application {
 			@Override
 			public void handle(long now) {
 				gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+				
 				double heroHeight = objects.get(0).getHeight();
 				double groundTop = canvas.getHeight();
 				
-				// drawing the gorund for the level
+				// drawing the ground for the level
 				for(GameObject gr:ground)
 				{
-					if (gr.getY() < groundTop) {
+					if (gr.getY() < groundTop) // finding out the ground level
+					{
 				        groundTop = gr.getY();
 				    }
 					
 					gr.update();
 					
 				}
-				double heroY = groundTop - heroHeight + 20;
-				
+				double heroY = groundTop - heroHeight + 20; // placing the character on the ground level 
+				/**
+				 * isJumping functionality
+				 * essentially whenever the w is pressed isJumping is changed to true.
+				 * This using velocity and gravity changes the y position of the character
+				 * When velocity reaches 0 jump is completed so isJumping is set to false again
+				 */
 				if(isJumping == false)
 				{
 					y = heroY;

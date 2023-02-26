@@ -57,8 +57,8 @@ public class CaveEscapeApp extends Application {
 		scene.setOnKeyPressed(event -> {    // should be moved to its own class
 			if (event.getCode() == KeyCode.W && !isJumping)
 			{
-				isJumping = true;
-				//main.setY(y -= moveSpeed);
+				//isJumping = true;
+				main.setY(y -= moveSpeed);
 			}
 			else if(event.getCode() == KeyCode.S)
 			{

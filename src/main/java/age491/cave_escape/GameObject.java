@@ -7,7 +7,8 @@ public class GameObject {
 	protected Image img;
 	protected double x,y;
 	protected GraphicsContext gc;
-	int height;
+	double height;
+	
 	
 	public GameObject(double x, double y, GraphicsContext gc)
 	{
@@ -15,32 +16,37 @@ public class GameObject {
 		this.x = x;
 		this.y = y;
 		this.gc = gc;
-		height = 100;
+		double height = 100;
 		
 		
 	}
-	public void update()
+	public void update(double hy)
 	{
 		if(img!=null)
 		{
-			gc.drawImage(img,  x, y,  100,100);
+			gc.drawImage(img,  x, y,  100,hy);
 		}
 	}
 	
-	private double getX() {
+	public double getX() {
 		return x;
 	}
-	 void setX(double x) {
+	public void setX(double x) {
 		this.x = x;
 	}
 	 double getY() {
 		return y;
 	}
-	void setY(double y) {
+	public void setY(double y) {
 		this.y = y;
 	}
-	int getHeight()
+	public void setHeight(double height)
+	{
+		this.height = height;
+	}
+	public double getHeight()
 	{
 		return height;
 	}
+	
 }

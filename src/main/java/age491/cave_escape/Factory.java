@@ -12,7 +12,11 @@ public class Factory implements FactoryIF {
 		}
 		if(discrim.equals("groundLow"))
 		{
-			return new GroundGenerator(x, y,gc);
+			return new GroundLow(x, y,gc);
+		}
+		if(discrim.equals("groundRandom"))
+		{
+			return new GroundHigh(x,y,gc);
 		}
 		return null;
 	}

@@ -30,7 +30,7 @@ public class CaveEscapeApp extends Application {
 	
 	
 	double x = 0.0, y=0.0;
-	double moveSpeed = 5.0;
+	double moveSpeed = 10.0;
 	double jumpSpeed = 10.0;
 	double gravity = 0.7;
 	boolean isJumping = false;
@@ -58,12 +58,14 @@ public class CaveEscapeApp extends Application {
 		 * the ground consists of GroundGenerator objects that are used as 100x100 tiles to be placed on the ground level.
 		 * Later the tiles will be randomly generated to make the terrain of the level more different
 		 */
+		
 		for(int t=0; t<8; t++)
 		{
 			double gx = t*100, gy = 500;
-			
 			ground.add(factory.createProduct("groundLow", gx, gy));
 		}
+		
+		
 		// Addition of a controllable character hero
 		objects.add(factory.createProduct("hero", x, y));
 		
@@ -76,14 +78,17 @@ public class CaveEscapeApp extends Application {
 				isJumping = true;
 				velocityY = jumpSpeed;
 			}
-			else if(event.getCode() == KeyCode.A) // movement to right
+			else if(event.getCode() == KeyCode.A) // movement to left
 			{
 				main.setX(x -= moveSpeed);
+				// change image to moving left
 			}
-			else if(event.getCode() == KeyCode.D) // movement to left
+			else if(event.getCode() == KeyCode.D) // movement to right
 			{
 				main.setX(x += moveSpeed);
+				// change image to moving left
 			}
+			
 			
 		});
 		AnimationTimer timer = new AnimationTimer()
@@ -96,9 +101,11 @@ public class CaveEscapeApp extends Application {
 				double heroHeight = objects.get(0).getHeight();
 				double groundTop = canvas.getHeight();
 				
+				
 				// drawing the ground for the level
 				for(GameObject gr:ground)
 				{
+					
 					if (gr.getY() < groundTop) // finding out the ground level
 					{
 				        groundTop = gr.getY();
@@ -108,6 +115,7 @@ public class CaveEscapeApp extends Application {
 					
 				}
 				double heroY = groundTop - heroHeight + 20; // placing the character on the ground level 
+				
 				/**
 				 * isJumping functionality
 				 * essentially whenever the w is pressed isJumping is changed to true.
@@ -130,6 +138,7 @@ public class CaveEscapeApp extends Application {
 					}
 				}
 				objects.get(0).setY(y);
+				
 				objects.get(0).setX(x);
 				
 				for(GameObject obj:objects)

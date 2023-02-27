@@ -35,6 +35,7 @@ public class CaveEscapeApp extends Application {
 	double gravity = 0.7;
 	boolean isJumping = false;
 	double velocityY = 0.0;
+	int heroLaps = 0;
 	@Override
 	public void start(Stage primaryStage) throws Exception
 	{
@@ -100,6 +101,18 @@ public class CaveEscapeApp extends Application {
 				
 				double heroHeight = objects.get(0).getHeight();
 				double groundTop = canvas.getHeight();
+				double heroX = objects.get(0).getX();
+				
+				if(heroX >= 800)
+				{
+					x = 0;
+					heroLaps++;
+				}
+				else if(heroX < 0)
+				{
+					x = 750;
+					heroLaps--;
+				}
 				
 				
 				// drawing the ground for the level
@@ -145,7 +158,7 @@ public class CaveEscapeApp extends Application {
 				{
 					obj.update();	
 				}
-				
+				System.out.println(heroLaps);
 				
 			}
 			

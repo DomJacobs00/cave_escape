@@ -27,19 +27,19 @@ public class GameObject {
 		}
 	}
 	
-	private double getX() {
+	public double getX() {
 		return x;
 	}
-	 void setX(double x) {
+	public void setX(double x) {
 		this.x = x;
 	}
-	 double getY() {
+	public double getY() {
 		return y;
 	}
-	void setY(double y) {
+	public void setY(double y) {
 		this.y = y;
 	}
-	int getHeight()
+	public int getHeight()
 	{
 		return height;
 	}

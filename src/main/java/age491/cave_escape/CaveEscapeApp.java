@@ -158,7 +158,7 @@ public class CaveEscapeApp extends Application {
 				{
 					obj.update();	
 				}
-				System.out.println(heroLaps);
+				
 				
 			}
 			

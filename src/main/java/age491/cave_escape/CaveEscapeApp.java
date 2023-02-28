@@ -69,6 +69,7 @@ public class CaveEscapeApp extends Application {
 		
 		// Addition of a controllable character hero
 		objects.add(factory.createProduct("hero", x, y));
+		objects.add(factory.createProduct("skeleton", 300, 420));
 		
 		GameObject main = objects.get(0); // Accessing the character form the list of objects
 		
@@ -120,6 +121,7 @@ public class CaveEscapeApp extends Application {
 				// drawing the ground for the level
 				for(GameObject gr:ground)
 				{
+					
 					
 					if (gr.getY() < groundTop) // finding out the ground level
 					{

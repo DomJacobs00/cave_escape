@@ -7,7 +7,8 @@ public class GameObject {
 	protected Image img;
 	protected double x,y;
 	protected GraphicsContext gc;
-	int height;
+	protected int height;
+	protected int health;
 	
 	public GameObject(double x, double y, GraphicsContext gc)
 	{
@@ -16,6 +17,7 @@ public class GameObject {
 		this.y = y;
 		this.gc = gc;
 		height = 100;
+		health = 100;
 		
 		
 	}
@@ -54,6 +56,15 @@ public class GameObject {
 	
 	public void jumping()
 	{
+		
+	}
+	public void setHealth(int number)
+	{
+		health = number;
+	}
+	public int getHealth()
+	{
+		return health;
 		
 	}
 }

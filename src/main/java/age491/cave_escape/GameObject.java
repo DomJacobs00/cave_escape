@@ -58,6 +58,10 @@ public class GameObject {
 	{
 		
 	}
+	/**
+	 * 
+	 * addition of health bar or something similar to the game to monitor main characters health
+	 */
 	public void setHealth(int number)
 	{
 		health = number;

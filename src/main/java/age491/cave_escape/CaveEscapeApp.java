@@ -102,7 +102,7 @@ public class CaveEscapeApp extends Application {
 				double heroHeight = objects.get(0).getHeight();
 				double groundTop = canvas.getHeight();
 				double heroX = objects.get(0).getX();
-				
+				// Moves the game character to the beginning or the end of the screen accordingly
 				if(heroX >= 800)
 				{
 					x = 0;

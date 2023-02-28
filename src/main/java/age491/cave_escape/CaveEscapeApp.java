@@ -83,10 +83,12 @@ public class CaveEscapeApp extends Application {
 			{
 				main.setX(x -= moveSpeed);
 				// change image to moving left
+				main.movingLeft();
 			}
 			else if(event.getCode() == KeyCode.D) // movement to right
 			{
 				main.setX(x += moveSpeed);
+				main.movingRight();
 				// change image to moving left
 			}
 			
@@ -141,6 +143,7 @@ public class CaveEscapeApp extends Application {
 				}
 				else
 				{
+					
 					velocityY -= gravity;
 					y -= velocityY;
 					if(y >= heroY)
@@ -148,6 +151,7 @@ public class CaveEscapeApp extends Application {
 						y = heroY;
 						velocityY = 0.0;
 						isJumping = false;
+						
 					}
 				}
 				objects.get(0).setY(y);

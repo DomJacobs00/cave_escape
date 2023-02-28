@@ -43,4 +43,17 @@ public class GameObject {
 	{
 		return height;
 	}
+	public void movingLeft()
+	{
+		System.out.println("left");
+	}
+	public void movingRight()
+	{
+		System.out.println("right");
+	}
+	
+	public void jumping()
+	{
+		
+	}
 }

@@ -31,10 +31,10 @@ public class CaveEscapeApp extends Application {
 	
 	double x = 0.0, y=0.0;
 	double moveSpeed = 10.0;
-	double jumpSpeed = 10.0;
+	double jumpSpeed = 13.0;
 	double gravity = 0.7;
 	boolean isJumping = false;
-	double velocityY = 0.0;
+	double velocityY = 2.0;
 	int heroLaps = 0;
 	@Override
 	public void start(Stage primaryStage) throws Exception

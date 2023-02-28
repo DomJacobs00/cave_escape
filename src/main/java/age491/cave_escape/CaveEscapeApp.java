@@ -29,7 +29,7 @@ public class CaveEscapeApp extends Application {
 	
 	
 	
-	double x = 0.0, y=0.0;
+	double x = -20.0, y=0.0;
 	double moveSpeed = 10.0;
 	double jumpSpeed = 13.0;
 	double gravity = 0.7;
@@ -69,7 +69,7 @@ public class CaveEscapeApp extends Application {
 		
 		// Addition of a controllable character hero
 		objects.add(factory.createProduct("hero", x, y));
-		objects.add(factory.createProduct("skeleton", 300, 420));
+		//objects.add(factory.createProduct("skeleton", 300, 420));
 		
 		GameObject main = objects.get(0); // Accessing the character form the list of objects
 		
@@ -99,21 +99,21 @@ public class CaveEscapeApp extends Application {
 		{
 			
 			@Override
+			
 			public void handle(long now) {
 				gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
-				
 				double heroHeight = objects.get(0).getHeight();
 				double groundTop = canvas.getHeight();
 				double heroX = objects.get(0).getX();
 				// Moves the game character to the beginning or the end of the screen accordingly
-				if(heroX >= 800)
+				if(heroX > 730)
 				{
-					x = 0;
+					x = -20;
 					heroLaps++;
 				}
-				else if(heroX < 0)
+				else if(heroX < -20)
 				{
-					x = 750;
+					x = 730;
 					heroLaps--;
 				}
 				

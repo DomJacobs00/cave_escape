@@ -79,19 +79,32 @@ public class CaveEscapeApp extends Application {
 			{
 				isJumping = true;
 				velocityY = jumpSpeed;
+				System.out.println("W");
 			}
 			else if(event.getCode() == KeyCode.A) // movement to left
 			{
 				main.setX(x -= moveSpeed);
 				// change image to moving left
 				main.movingLeft();
+				System.out.println("A");
 			}
 			else if(event.getCode() == KeyCode.D) // movement to right
 			{
 				main.setX(x += moveSpeed);
 				main.movingRight();
+				System.out.println("D");
 				// change image to moving left
 			}
+			else if(event.getCode() == KeyCode.D && event.getCode() == KeyCode.W)
+			{
+				System.out.println("W & D");
+			}
+			else if(event.getCode() == KeyCode.A && event.getCode() == KeyCode.W)
+			{
+				System.out.println("W & A");
+			}
+			
+			
 			
 			
 		});

@@ -9,6 +9,8 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -74,7 +76,10 @@ public class CaveEscapeApp extends Application {
 		GameObject main = objects.get(0); // Accessing the character form the list of objects
 		
 		// movement for the character ( will be moved to separate class maybe?)
+		boolean isWPressed = false, isAPressed = false, isDPressed = false;
+		
 		scene.setOnKeyPressed(event -> {    
+			
 			if (event.getCode() == KeyCode.W && !isJumping) // w is binded to make the character jump (move verticaly up)
 			{
 				isJumping = true;

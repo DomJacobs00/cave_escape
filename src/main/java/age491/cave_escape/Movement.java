@@ -7,6 +7,8 @@ public class Movement
 	double jumpSpeed = 13.0;
 	double gravity = 0.7;
 	double velocityY = 2.0;
+	boolean isAPressed = false;
+	boolean isDPressed = false;
 	public Movement() {
 		;
 	}
@@ -20,13 +22,21 @@ public class Movement
 		x = inx + moveSpeed;
 		return x;
 	}
-	public void jump(double iny)
+	public double jump(double iny)
 	{
-		
+		velocityY = jumpSpeed;
+		velocityY -= gravity;
+		y -= velocityY;
+		if(y >= iny)
+		{
+			y = iny;
+			velocityY = 0.0;
+			
+		}
+		return iny;
 	}
 	
-	boolean isAPressed = false;
-	boolean isDPressed = false;
+	
 	/**
 	 * 
 	 

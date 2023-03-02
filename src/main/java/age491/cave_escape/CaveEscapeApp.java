@@ -23,6 +23,7 @@ public class CaveEscapeApp extends Application {
 	ArrayList<GameObject> objects = new ArrayList<GameObject>(); // stores all the characters ( main character and enemies)
 	ArrayList<GameObject> ground = new ArrayList<GameObject>(); // stores all objects that create the ground
 	Factory factory;
+	Movement movement;
 	
 	public static void main(String[] args)
 	{
@@ -35,7 +36,8 @@ public class CaveEscapeApp extends Application {
 	double moveSpeed = 10.0;
 	double jumpSpeed = 13.0;
 	double gravity = 0.7;
-	boolean isJumping = false;
+	boolean isJumping = false, isJumpingLeft = false, isJumpingRight = false;
+	boolean isWPressed = false, isAPressed = false, isDPressed = false;
 	double velocityY = 2.0;
 	int heroLaps = 0;
 	@Override
@@ -55,6 +57,7 @@ public class CaveEscapeApp extends Application {
 		gc.setFill(Color.BLACK);
 		gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
 		factory = new Factory(gc);
+		movement = new Movement();
 		
 		/**
 		 * generating the ground for the level
@@ -76,18 +79,22 @@ public class CaveEscapeApp extends Application {
 		GameObject main = objects.get(0); // Accessing the character form the list of objects
 		
 		// movement for the character ( will be moved to separate class maybe?)
-		boolean isWPressed = false, isAPressed = false, isDPressed = false;
+		
 		
 		scene.setOnKeyPressed(event -> {    
 			
 			if (event.getCode() == KeyCode.W && !isJumping) // w is binded to make the character jump (move verticaly up)
 			{
 				isJumping = true;
+				isWPressed =true;
+				
+				y = movement.jump(y);
 				velocityY = jumpSpeed;
 				System.out.println("W");
 			}
 			else if(event.getCode() == KeyCode.A) // movement to left
 			{
+				isAPressed= true;
 				main.setX(x -= moveSpeed);
 				// change image to moving left
 				main.movingLeft();
@@ -95,23 +102,38 @@ public class CaveEscapeApp extends Application {
 			}
 			else if(event.getCode() == KeyCode.D) // movement to right
 			{
+				isDPressed = true;
 				main.setX(x += moveSpeed);
 				main.movingRight();
 				System.out.println("D");
 				// change image to moving left
 			}
-			else if(event.getCode() == KeyCode.D && event.getCode() == KeyCode.W)
+			if(isWPressed && isAPressed)
 			{
-				System.out.println("W & D");
+				isJumpingLeft = true;
+				System.out.println("A & W");
+				
 			}
-			else if(event.getCode() == KeyCode.A && event.getCode() == KeyCode.W)
+			if(isWPressed && isDPressed)
 			{
-				System.out.println("W & A");
+				isJumpingRight = true;
+				System.out.println("D & W");
+			}	
+		});
+		scene.setOnKeyReleased(event ->{
+			if (event.getCode() == KeyCode.W)
+			{
+				isWPressed = false;
 			}
-			
-			
-			
-			
+			if (event.getCode() == KeyCode.A)
+			{
+				isAPressed = false;
+			}
+			if (event.getCode() == KeyCode.D)
+			{
+				isDPressed = false;
+			}
+		
 		});
 		AnimationTimer timer = new AnimationTimer()
 		{
@@ -172,6 +194,30 @@ public class CaveEscapeApp extends Application {
 						velocityY = 0.0;
 						isJumping = false;
 						
+					}
+				}
+				if(isJumpingLeft)
+				{
+					velocityY -= gravity;
+					y -= velocityY;
+					main.setX(x -= moveSpeed);
+					if(y >= heroY)
+					{
+						y = heroY;
+						velocityY = 0.0;
+						isJumpingLeft = false;
+					}
+				}
+				if(isJumpingRight)
+				{
+					velocityY -= gravity;
+					y -= velocityY;
+					main.setX(x += moveSpeed);
+					if(y >= heroY)
+					{
+						y = heroY;
+						velocityY = 0.0;
+						isJumpingRight = false;
 					}
 				}
 				objects.get(0).setY(y);

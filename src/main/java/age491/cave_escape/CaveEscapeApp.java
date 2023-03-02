@@ -65,16 +65,18 @@ public class CaveEscapeApp extends Application {
 		 * Later the tiles will be randomly generated to make the terrain of the level more different
 		 */
 		
-		for(int t=0; t<8; t++)
+		for(int t=0; t<7; t++)
 		{
 			double gx = t*100, gy = 500;
 			ground.add(factory.createProduct("groundLow", gx, gy));
 		}
+		ground.add(factory.createProduct("highGround", 700, 500));
+		
 		
 		
 		// Addition of a controllable character hero
 		objects.add(factory.createProduct("hero", x, y));
-		//objects.add(factory.createProduct("skeleton", 300, 420));
+		objects.add(factory.createProduct("skeleton", 300, 420));
 		
 		GameObject main = objects.get(0); // Accessing the character form the list of objects
 		
@@ -90,7 +92,7 @@ public class CaveEscapeApp extends Application {
 				
 				y = movement.jump(y);
 				velocityY = jumpSpeed;
-				System.out.println("W");
+				
 			}
 			else if(event.getCode() == KeyCode.A) // movement to left
 			{
@@ -98,26 +100,26 @@ public class CaveEscapeApp extends Application {
 				main.setX(x -= moveSpeed);
 				// change image to moving left
 				main.movingLeft();
-				System.out.println("A");
+				
 			}
 			else if(event.getCode() == KeyCode.D) // movement to right
 			{
 				isDPressed = true;
 				main.setX(x += moveSpeed);
 				main.movingRight();
-				System.out.println("D");
-				// change image to moving left
+				
+				
 			}
 			if(isWPressed && isAPressed)
 			{
 				isJumpingLeft = true;
-				System.out.println("A & W");
+				
 				
 			}
 			if(isWPressed && isDPressed)
 			{
 				isJumpingRight = true;
-				System.out.println("D & W");
+				
 			}	
 		});
 		scene.setOnKeyReleased(event ->{
@@ -177,7 +179,9 @@ public class CaveEscapeApp extends Application {
 				 * isJumping functionality
 				 * essentially whenever the w is pressed isJumping is changed to true.
 				 * This using velocity and gravity changes the y position of the character
-				 * When velocity reaches 0 jump is completed so isJumping is set to false again
+				 * When velocity reaches 0 jump is completed so isJumping is set to false again.
+				 * Additionally, isJumpingLeft and isJumping right is added to combine movement
+				 * and jumping
 				 */
 				if(isJumping == false)
 				{

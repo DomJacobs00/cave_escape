@@ -14,6 +14,10 @@ public class Factory implements FactoryIF {
 		{
 			return new LowGround(x, y,gc);
 		}
+		if(discrim.equals("highGround"))
+		{
+			return new HighGround(x, y, gc);
+		}
 		if(discrim.equals("skeleton"))
 		{
 			return new Skeleton(x, y, gc);

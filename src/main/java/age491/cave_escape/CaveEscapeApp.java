@@ -182,7 +182,7 @@ public class CaveEscapeApp extends Application {
 					
 					
 				}
-				double heroY = groundTop - heroHeight + 20; // placing the character on the ground level 
+				double heroY = groundTop - heroHeight + 20; // placing the character on the ground level (needs to be changed)
 				
 				/**
 				 * isJumping functionality

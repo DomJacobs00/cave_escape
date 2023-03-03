@@ -73,15 +73,14 @@ public class CaveEscapeApp extends Application {
 		ground.add(factory.createProduct("highGround", 700, 500));
 		
 		
-		
 		// Addition of a controllable character hero
 		objects.add(factory.createProduct("hero", x, y));
+		// Addition of an enemy for testing purposes
 		objects.add(factory.createProduct("skeleton", 300, 420));
 		
 		GameObject main = objects.get(0); // Accessing the character form the list of objects
 		
 		// movement for the character ( will be moved to separate class maybe?)
-		
 		
 		scene.setOnKeyPressed(event -> {    
 			
@@ -169,8 +168,18 @@ public class CaveEscapeApp extends Application {
 					{
 				        groundTop = gr.getY();
 				    }
+					// Checks what type of ground it is and updates the dimensions accordingly
+					if(gr instanceof HighGround)
+					{
+						HighGround highGround = (HighGround) gr;
+						highGround.update();
+					}
+					else
+					{
+						gr.update();
+					}
 					
-					gr.update();
+					
 					
 				}
 				double heroY = groundTop - heroHeight + 20; // placing the character on the ground level 
@@ -233,6 +242,9 @@ public class CaveEscapeApp extends Application {
 					obj.update();	
 				}
 				
+				/**
+				 * Addition of collision mechanics to the game
+				 */
 				
 			}
 			

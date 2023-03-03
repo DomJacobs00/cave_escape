@@ -14,7 +14,7 @@ public class HighGround extends GameObject {
 	{
 		if(img!=null)
 		{
-			gc.drawImage(img,  x, y,  100,200);
+			gc.drawImage(img,  x, 400,  100,200);
 		}
 	}
 

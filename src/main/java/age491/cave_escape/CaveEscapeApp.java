@@ -76,7 +76,7 @@ public class CaveEscapeApp extends Application {
 		// Addition of a controllable character hero
 		objects.add(factory.createProduct("hero", x, y));
 		// Addition of an enemy for testing purposes
-		objects.add(factory.createProduct("skeleton", 300, 420));
+		//objects.add(factory.createProduct("skeleton", 300, 420));
 		
 		GameObject main = objects.get(0); // Accessing the character form the list of objects
 		
@@ -245,6 +245,27 @@ public class CaveEscapeApp extends Application {
 				/**
 				 * Addition of collision mechanics to the game
 				 */
+				for(GameObject character: objects)
+				{
+					for(GameObject groundObject: ground)
+					{
+						double characterLeft = character.getX();
+						double characterRight = character.getX() + character.getWidth();
+						double characterTop = character.getY();
+						double characterBottom = character.getY()+ character.getHeight();
+						
+						double groundLeft = groundObject.getX();
+						double groundRight = groundObject.getX()+groundObject.getWidth();
+						double groundTop1 = groundObject.getY();
+						double groundBottom = groundObject.getY()+groundObject.getHeight();
+						if(characterLeft < groundRight && characterRight > groundLeft && characterTop < groundBottom && characterBottom > groundTop1)
+						{
+							//handle the collision
+						}
+						
+					}
+					
+				}
 				
 			}
 			

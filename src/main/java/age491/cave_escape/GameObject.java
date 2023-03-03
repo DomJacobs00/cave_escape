@@ -8,6 +8,7 @@ public class GameObject {
 	protected double x,y;
 	protected GraphicsContext gc;
 	protected int height;
+	protected int width;
 	protected int health;
 	
 	public GameObject(double x, double y, GraphicsContext gc)
@@ -17,6 +18,7 @@ public class GameObject {
 		this.y = y;
 		this.gc = gc;
 		height = 100;
+		width = 100;
 		health = 100;
 		
 		
@@ -44,6 +46,10 @@ public class GameObject {
 	public int getHeight()
 	{
 		return height;
+	}
+	public int getWidth()
+	{
+		return width;
 	}
 	public void movingLeft()
 	{

@@ -259,25 +259,31 @@ public class CaveEscapeApp extends Application {
 					double tileCorner = 50;
 					int curTile = 0;
 					
-					if(objects.get(0).getX() <= tileCorner)
-					{
-						// tile left side
-						double gRight = ground.get(curTile).getX() + 50;
-						// tile right side
-						double gLeft = ground.get(curTile).getX() - 50;
-						// tile top
-						double gTop = ground.get(curTile).getY() + 50;
-						// tile bottom
-						double gBottom = ground.get(curTile).getY() - 50;
 						
-					}
-					else
+					// tile left side
+					double gRight = ground.get(curTile).getX() + 50;
+					// tile right side
+					double gLeft = ground.get(curTile).getX() - 50;
+					// tile top
+					double gTop = ground.get(curTile).getY() + 50;
+					// tile bottom
+					double gBottom = ground.get(curTile).getY() - 50;
+					System.out.println(" Tile: " +curTile + " Right x:" +gRight + " LeftX: " +gLeft);
+							
+						
+						
+					while(objects.get(0).getX() > tileCorner )
 					{
-						tileCorner = tileCorner + 100;
+						tileCorner += 100;
 						curTile ++;
 					}
+							
+						
+						
 					
-					System.out.println("x: " + x + " y: "+y + " Tile: " +curTile);
+					
+					
+					
 				
 				
 			}

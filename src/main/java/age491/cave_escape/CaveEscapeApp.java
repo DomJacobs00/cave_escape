@@ -32,7 +32,7 @@ public class CaveEscapeApp extends Application {
 	
 	
 	
-	double x = -20.0, y=0.0;
+	double x = -20.0, y=420.0;
 	double moveSpeed = 10.0;
 	double jumpSpeed = 13.0;
 	double gravity = 0.7;
@@ -72,13 +72,11 @@ public class CaveEscapeApp extends Application {
 		}
 		ground.add(factory.createProduct("highGround", 700, 500));
 		
-		// Getting the ground level for initial y position of the controllable character
-		
 		
 		// Addition of a controllable character hero
 		objects.add(factory.createProduct("hero", x, y));
 		// Addition of an enemy for testing purposes
-		//objects.add(factory.createProduct("skeleton", 300, 420));
+		//objects.add(factory.createProduct("skeleton", 300, y));
 		
 		GameObject main = objects.get(0); // Accessing the character form the list of objects
 		
@@ -151,12 +149,12 @@ public class CaveEscapeApp extends Application {
 				// Moves the game character to the beginning or the end of the screen accordingly
 				if(heroX > 730)
 				{
-					x = -20;
+				//	x = -20;
 					heroLaps++;
 				}
 				else if(heroX < -20)
 				{
-					x = 730;
+				//	x = 730;
 					heroLaps--;
 				}
 				
@@ -184,9 +182,6 @@ public class CaveEscapeApp extends Application {
 					
 					
 				}
-				/**
-				 * Addition of collision mechanics to the game
-				 */
 				
 				double heroY = groundTop - heroHeight + 20; // placing the character on the ground level (needs to be changed)
 				
@@ -239,11 +234,50 @@ public class CaveEscapeApp extends Application {
 				
 				objects.get(0).setX(x);
 				
+				
 				for(GameObject obj:objects)
 				{
 					obj.update();	
 				}
 				
+				/**
+				 *  from x = -50 to x = 750 (800)
+				 *  Essentially the whole level is from -50 to 750
+				 *  the level consists of 8 tiles
+				 *  obtaining all the coordinates for movable character (left right top bottom)
+				 *  obtaining all the coordinates for current tile (left right top bottom)
+				 *  
+				 */
+					// character right side
+					double cRight = objects.get(0).getX()+50;
+					// character left side
+					double cLeft = objects.get(0).getX()-50;
+					// character bottom
+					double cBottom = objects.get(0).getY()-50;
+					// character top
+					double cTop = objects.get(0).getY()+50;
+					double tileCorner = 50;
+					int curTile = 0;
+					
+					if(objects.get(0).getX() <= tileCorner)
+					{
+						// tile left side
+						double gRight = ground.get(curTile).getX() + 50;
+						// tile right side
+						double gLeft = ground.get(curTile).getX() - 50;
+						// tile top
+						double gTop = ground.get(curTile).getY() + 50;
+						// tile bottom
+						double gBottom = ground.get(curTile).getY() - 50;
+						
+					}
+					else
+					{
+						tileCorner = tileCorner + 100;
+						curTile ++;
+					}
+					
+					System.out.println("x: " + x + " y: "+y + " Tile: " +curTile);
 				
 				
 			}

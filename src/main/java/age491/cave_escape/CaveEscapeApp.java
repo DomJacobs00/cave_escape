@@ -72,6 +72,8 @@ public class CaveEscapeApp extends Application {
 		}
 		ground.add(factory.createProduct("highGround", 700, 500));
 		
+		// Getting the ground level for initial y position of the controllable character
+		
 		
 		// Addition of a controllable character hero
 		objects.add(factory.createProduct("hero", x, y));
@@ -182,6 +184,10 @@ public class CaveEscapeApp extends Application {
 					
 					
 				}
+				/**
+				 * Addition of collision mechanics to the game
+				 */
+				
 				double heroY = groundTop - heroHeight + 20; // placing the character on the ground level (needs to be changed)
 				
 				/**
@@ -192,11 +198,7 @@ public class CaveEscapeApp extends Application {
 				 * Additionally, isJumpingLeft and isJumping right is added to combine movement
 				 * and jumping
 				 */
-				if(isJumping == false)
-				{
-					y = heroY;
-				}
-				else
+				if(isJumping)
 				{
 					
 					velocityY -= gravity;
@@ -242,30 +244,7 @@ public class CaveEscapeApp extends Application {
 					obj.update();	
 				}
 				
-				/**
-				 * Addition of collision mechanics to the game
-				 */
-				for(GameObject character: objects)
-				{
-					for(GameObject groundObject: ground)
-					{
-						double characterLeft = character.getX();
-						double characterRight = character.getX() + character.getWidth();
-						double characterTop = character.getY();
-						double characterBottom = character.getY()+ character.getHeight();
-						
-						double groundLeft = groundObject.getX();
-						double groundRight = groundObject.getX()+groundObject.getWidth();
-						double groundTop1 = groundObject.getY();
-						double groundBottom = groundObject.getY()+groundObject.getHeight();
-						if(characterLeft < groundRight && characterRight > groundLeft && characterTop < groundBottom && characterBottom > groundTop1)
-						{
-							//handle the collision
-						}
-						
-					}
-					
-				}
+				
 				
 			}
 			

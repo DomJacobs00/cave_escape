@@ -70,7 +70,7 @@ public class CaveEscapeApp extends Application {
 			double gx = t*100, gy = 500;
 			ground.add(factory.createProduct("groundLow", gx, gy));
 		}
-		ground.add(factory.createProduct("highGround", 700, 450));
+		ground.add(factory.createProduct("highGround", 700, 450)); // highGround y is 450
 		
 		
 		// Addition of a controllable character hero
@@ -164,9 +164,9 @@ public class CaveEscapeApp extends Application {
 				{
 					
 					
-					if (gr.getY() < groundTop) // finding out the ground level
+					if (gr.getY() < groundTop && !(gr instanceof HighGround) ) // finding out the ground level
 					{
-				        groundTop = gr.getY();
+				        groundTop = gr.getY(); // need to change this
 				    }
 					// Checks what type of ground it is and updates the dimensions accordingly
 					if(gr instanceof HighGround)
@@ -182,6 +182,61 @@ public class CaveEscapeApp extends Application {
 					
 					
 				}
+				/**
+				 *  from x = -50 to x = 750 (800)
+				 *  Essentially the whole level is from -50 to 750
+				 *  the level consists of 8 tiles
+				 *  obtaining all the coordinates for movable character (left right top bottom)
+				 *  obtaining all the coordinates for current tile (left right top bottom)
+				 *  
+				 */
+					// character right side
+					double cRight = objects.get(0).getX()+50;
+					// character left side
+					double cLeft = objects.get(0).getX()-50;
+					// character bottom
+					double cBottom = objects.get(0).getY()-50;
+					// character top
+					double cTop = objects.get(0).getY()+50;
+					double tileCorner = 50;
+					int curTile = 0;
+					// changes the position of the arraylist for ground
+					while(objects.get(0).getX() > tileCorner )
+					{
+						tileCorner += 100;
+						curTile ++;
+					}
+					// tile left side
+					double gRight = ground.get(curTile).getX() + 50;
+					// tile right side
+					double gLeft = ground.get(curTile).getX() - 50;
+					// tile top
+					double gTop = ground.get(curTile).getY() - (ground.get(curTile).getHeight()/2);
+					// tile bottom
+					double gBottom = ground.get(curTile).getY() + (ground.get(curTile).getHeight()/2);
+					
+					//calculating the distances between the character and ground objects
+					double distanceRight = gLeft - cRight;
+					double distanceLeft = cLeft - gRight;
+					double distanceTop = cBottom - gTop;
+					double distanceBottom = gBottom - cTop;
+							
+					// Collision handling
+					if(distanceRight < 0 && distanceLeft < 0 && gTop < cBottom)
+					{
+						if(distanceRight < distanceLeft)
+						{
+							System.out.println("Collision right");
+							
+						}
+						else
+						{
+							System.out.println("Collision left");
+						}
+					}
+					
+					//System.out.println("Character bottom: " +  cBottom + "Ground Top: " + gTop + "Tile: "+ curTile);
+					//	System.out.println("Tile number 7: Width: "+ ground.get(7).getWidth() +" Height: "+ ground.get(7).getWidth());
 				
 				double heroY = groundTop - heroHeight + 20; // placing the character on the ground level (needs to be changed)
 				
@@ -240,74 +295,7 @@ public class CaveEscapeApp extends Application {
 					obj.update();	
 				}
 				
-				/**
-				 *  from x = -50 to x = 750 (800)
-				 *  Essentially the whole level is from -50 to 750
-				 *  the level consists of 8 tiles
-				 *  obtaining all the coordinates for movable character (left right top bottom)
-				 *  obtaining all the coordinates for current tile (left right top bottom)
-				 *  
-				 */
-					// character right side
-					double cRight = objects.get(0).getX()+50;
-					// character left side
-					double cLeft = objects.get(0).getX()-50;
-					// character bottom
-					double cBottom = objects.get(0).getY()-50;
-					// character top
-					double cTop = objects.get(0).getY()+50;
-					double tileCorner = 50;
-					int curTile = 0;
-					// changes the position of the arraylist for ground
-					while(objects.get(0).getX() > tileCorner )
-					{
-						tileCorner += 100;
-						curTile ++;
-					}
-					// tile left side
-					double gRight = ground.get(curTile).getX() + 50;
-					// tile right side
-					double gLeft = ground.get(curTile).getX() - 50;
-					// tile top
-					double gTop = ground.get(curTile).getY() - (ground.get(curTile).getHeight()/2);
-					// tile bottom
-					double gBottom = ground.get(curTile).getY() + (ground.get(curTile).getHeight()/2);
-					
-					//calculating the distances between the character and ground objects
-					double distanceRight = gLeft - cRight;
-					double distanceLeft = cLeft - gRight;
-					double distanceTop = cBottom - gTop;
-					double distanceBottom = gBottom - cTop;
-							
-					boolean collision = distanceRight < 0 && distanceLeft < 0 && distanceTop < 0 && distanceBottom < 0;
-					
-					if(collision)
-					{
-						if(distanceRight < 0 && distanceLeft < 0)
-						{
-							if (distanceRight < distanceLeft)
-							{
-								//System.out.println("Collision right");
-							}
-							else
-							{
-								//System.out.println("Collision left");
-							}
-						}
-						if(distanceTop < 0 && distanceBottom < 0)
-						{
-							if(distanceTop < distanceBottom)
-							{
-								//System.out.println("collision Top");
-							}
-							else
-							{
-								//System.out.println("collision Bottom");
-							}
-						}
-					}
-					System.out.println("Character bottom: " +  cBottom + "Ground Top: " + gTop + "Tile: "+ curTile);
-						//System.out.println("Tile number 7: Width: "+ ground.get(7).getWidth() +" Height: "+ ground.get(7).getHeight());
+				
 						
 							
 					

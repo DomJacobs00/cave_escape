@@ -258,29 +258,33 @@ public class CaveEscapeApp extends Application {
 					double cTop = objects.get(0).getY()+50;
 					double tileCorner = 50;
 					int curTile = 0;
+					// changes the position of the arraylist for ground
+					while(objects.get(0).getX() > tileCorner )
+					{
+						tileCorner += 100;
+						curTile ++;
+					}
+					// tile left side
+					double gRight = ground.get(curTile).getX() + 50;
+					// tile right side
+					double gLeft = ground.get(curTile).getX() - 50;
+					// tile top
+					double gTop = ground.get(curTile).getY() + 50;
+					// tile bottom
+					double gBottom = ground.get(curTile).getY() - 50;
 					
-						if(objects.get(0).getX() <= tileCorner)
-						{
-							// tile left side
-							double gRight = ground.get(curTile).getX() + 50;
-							// tile right side
-							double gLeft = ground.get(curTile).getX() - 50;
-							// tile top
-							double gTop = ground.get(curTile).getY() + 50;
-							// tile bottom
-							double gBottom = ground.get(curTile).getY() - 50;
-							System.out.println(" Tile: " +curTile + " Right x:" +gRight + " LeftX: " +gLeft);
+					//calculating the distances between the character and ground objects
+					double distanceRight = gLeft - cRight;
+					double distanceLeft = cLeft - gRight;
+					double distanceTop = cBottom - gTop;
+					double distanceBottom = gBottom - cTop;
 							
-						}
-						else
-						{
-							while(objects.get(0).getX() > tileCorner )
-							{
-								tileCorner += 100;
-								curTile ++;
-							}
+					
+						
+						
 							
-						}
+					//System.out.println(" Tile: " +curTile + " Right x:" +gRight + " LeftX: " +gLeft);
+						
 						
 					
 					

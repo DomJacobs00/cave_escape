@@ -228,14 +228,17 @@ public class CaveEscapeApp extends Application {
 					// Collision handling
 					if(distanceRight < 0 && distanceLeft < 0 && gTop < cBottom)
 					{
+						double moveX = Math.min(Math.abs(distanceRight), Math.abs(distanceLeft));
 						if(distanceRight < distanceLeft)
 						{
 							System.out.println("Collision right");
-							
+							x = x + moveX;
 						}
 						else
 						{
 							System.out.println("Collision left");
+							x = x - moveX;
+							
 						}
 					}
 					

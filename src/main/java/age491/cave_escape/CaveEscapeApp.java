@@ -168,6 +168,10 @@ public class CaveEscapeApp extends Application {
 					{
 				        groundTop = gr.getY(); // need to change this
 				    }
+					else if(gr instanceof HighGround && (gr.getX() - 50) <= heroX && heroX <= (gr.getX() + 50) )
+					{
+				        groundTop = gr.getY() -50; // need to change this
+				    }
 					// Checks what type of ground it is and updates the dimensions accordingly
 					if(gr instanceof HighGround)
 					{

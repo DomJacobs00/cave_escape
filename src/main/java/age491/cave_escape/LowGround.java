@@ -15,6 +15,18 @@ public class LowGround extends GameObject {
 	public LowGround(double x, double y, GraphicsContext gc) {
 		super(x, y, gc);
 		img = new Image(LowGround.class.getResource("ground_no_elevation.png").toExternalForm());
+		setHeight(100);
+		setWidth(100);
+	}
+	@Override
+	public void setWidth(int width)
+	{
+		this.width = width;
+	}
+	@Override
+	public void setHeight(int height)
+	{
+		this.height = height;
 	}
 
 }

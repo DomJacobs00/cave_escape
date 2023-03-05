@@ -70,7 +70,7 @@ public class CaveEscapeApp extends Application {
 			double gx = t*100, gy = 500;
 			ground.add(factory.createProduct("groundLow", gx, gy));
 		}
-		ground.add(factory.createProduct("highGround", 700, 500));
+		ground.add(factory.createProduct("highGround", 700, 450));
 		
 		
 		// Addition of a controllable character hero

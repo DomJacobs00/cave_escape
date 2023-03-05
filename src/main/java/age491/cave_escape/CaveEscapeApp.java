@@ -242,7 +242,8 @@ public class CaveEscapeApp extends Application {
 						}
 					}
 					
-					//System.out.println("Character bottom: " +  cBottom + "Ground Top: " + gTop + "Tile: "+ curTile);
+					
+					System.out.println("Character bottom: " +  cBottom + "Ground Top: " + gTop + "Tile: "+ curTile);
 					//	System.out.println("Tile number 7: Width: "+ ground.get(7).getWidth() +" Height: "+ ground.get(7).getWidth());
 				
 				double heroY = groundTop - heroHeight + 20; // placing the character on the ground level (needs to be changed)

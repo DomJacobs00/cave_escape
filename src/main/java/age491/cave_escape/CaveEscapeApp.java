@@ -279,7 +279,33 @@ public class CaveEscapeApp extends Application {
 					double distanceTop = cBottom - gTop;
 					double distanceBottom = gBottom - cTop;
 							
+					boolean collision = distanceRight < 0 && distanceLeft < 0 && distanceTop < 0 && distanceBottom < 0;
 					
+					if(collision)
+					{
+						if(distanceRight < 0 && distanceLeft < 0)
+						{
+							if (distanceRight < distanceLeft)
+							{
+								System.out.println("Collision right");
+							}
+							else
+							{
+								System.out.println("Collision left");
+							}
+						}
+						if(distanceTop < 0 && distanceBottom < 0)
+						{
+							if(distanceTop < distanceBottom)
+							{
+								System.out.println("collision Top");
+							}
+							else
+							{
+								System.out.println("collision Bottom");
+							}
+						}
+					}
 						
 						
 							

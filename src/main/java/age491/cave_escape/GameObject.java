@@ -18,8 +18,6 @@ public class GameObject {
 		this.y = y;
 		this.gc = gc;
 		height = 100;
-		width = 100;
-		health = 100;
 		
 		
 	}
@@ -43,9 +41,17 @@ public class GameObject {
 	public void setY(double y) {
 		this.y = y;
 	}
+	public void setHeight(int height)
+	{
+		this.height = height;
+	}
 	public int getHeight()
 	{
 		return height;
+	}
+	public void setWidth(int width)
+	{
+		this.width = width;
 	}
 	public int getWidth()
 	{

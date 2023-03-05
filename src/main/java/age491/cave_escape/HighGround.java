@@ -16,6 +16,18 @@ public class HighGround extends GameObject {
 		{
 			gc.drawImage(img,  x, 400,  100,200);
 		}
+		setHeight(200);
+		setWidth(100);
+	}
+	@Override
+	public void setWidth(int width)
+	{
+		this.width = width;
+	}
+	@Override
+	public void setHeight(int height)
+	{
+		this.height = height;
 	}
 
 }

@@ -32,7 +32,7 @@ public class CaveEscapeApp extends Application {
 	
 	
 	
-	double x = -20.0, y=420.0;
+	double x = -20.0, y=430.0;
 	double moveSpeed = 10.0;
 	double jumpSpeed = 13.0;
 	double gravity = 0.7;
@@ -269,9 +269,9 @@ public class CaveEscapeApp extends Application {
 					// tile right side
 					double gLeft = ground.get(curTile).getX() - 50;
 					// tile top
-					double gTop = ground.get(curTile).getY() + 50;
+					double gTop = ground.get(curTile).getY() - (ground.get(curTile).getHeight()/2);
 					// tile bottom
-					double gBottom = ground.get(curTile).getY() - 50;
+					double gBottom = ground.get(curTile).getY() + (ground.get(curTile).getHeight()/2);
 					
 					//calculating the distances between the character and ground objects
 					double distanceRight = gLeft - cRight;
@@ -287,29 +287,30 @@ public class CaveEscapeApp extends Application {
 						{
 							if (distanceRight < distanceLeft)
 							{
-								System.out.println("Collision right");
+								//System.out.println("Collision right");
 							}
 							else
 							{
-								System.out.println("Collision left");
+								//System.out.println("Collision left");
 							}
 						}
 						if(distanceTop < 0 && distanceBottom < 0)
 						{
 							if(distanceTop < distanceBottom)
 							{
-								System.out.println("collision Top");
+								//System.out.println("collision Top");
 							}
 							else
 							{
-								System.out.println("collision Bottom");
+								//System.out.println("collision Bottom");
 							}
 						}
 					}
-						
+					System.out.println("Character bottom: " +  cBottom + "Ground Top: " + gTop + "Tile: "+ curTile);
+						//System.out.println("Tile number 7: Width: "+ ground.get(7).getWidth() +" Height: "+ ground.get(7).getHeight());
 						
 							
-					//System.out.println(" Tile: " +curTile + " Right x:" +gRight + " LeftX: " +gLeft);
+					
 						
 						
 					

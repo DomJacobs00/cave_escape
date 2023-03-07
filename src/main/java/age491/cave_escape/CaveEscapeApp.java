@@ -1,5 +1,6 @@
 package age491.cave_escape;
 
+import java.io.File;
 import java.util.ArrayList;
 
 
@@ -13,6 +14,8 @@ import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
 
 public class CaveEscapeApp extends Application {
@@ -309,7 +312,18 @@ public class CaveEscapeApp extends Application {
 				 * Using a premade collection of math equations and fileChooser it can be accomplished.		
 				 */
 							
-					
+				//FileChooser fileChooser = new FileChooser();
+				//fileChooser.setTitle("Select Questions File");
+				//fileChooser.getExtensionFilters().addAll(
+				//    new ExtensionFilter("CSV Files", "*.csv"),
+				//    new ExtensionFilter("All Files", "*.*")
+				//);
+
+				//File selectedFile = fileChooser.showOpenDialog(stage);
+				//if (selectedFile != null) {
+				    // Read the selected file and load the questions
+			//	}
+
 						
 						
 					

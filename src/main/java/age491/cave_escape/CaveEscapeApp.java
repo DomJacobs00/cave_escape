@@ -304,7 +304,10 @@ public class CaveEscapeApp extends Application {
 				}
 				
 				
-						
+				/**
+				 * To have a educational part of the game more interesting the addition of math related questions can be added.
+				 * Using a premade collection of math equations and fileChooser it can be accomplished.		
+				 */
 							
 					
 						

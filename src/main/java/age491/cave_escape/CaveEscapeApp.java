@@ -39,7 +39,7 @@ public class CaveEscapeApp extends Application {
 	double moveSpeed = 10.0;
 	double jumpSpeed = 13.0;
 	double gravity = 0.7;
-	boolean isJumping = false, isJumpingLeft = false, isJumpingRight = false;
+	boolean isJumping = false, isJumpingLeft = false, isJumpingRight = false, isFalling = false;
 	boolean isWPressed = false, isAPressed = false, isDPressed = false;
 	double velocityY = 2.0;
 	int heroLaps = 0;
@@ -152,12 +152,12 @@ public class CaveEscapeApp extends Application {
 				// Moves the game character to the beginning or the end of the screen accordingly
 				if(heroX > 730)
 				{
-				//	x = -20;
+					x = -20;
 					heroLaps++;
 				}
 				else if(heroX < -20)
 				{
-				//	x = 730;
+					x = 730;
 					heroLaps--;
 				}
 				
@@ -181,6 +181,7 @@ public class CaveEscapeApp extends Application {
 						HighGround highGround = (HighGround) gr;
 						highGround.update();
 					}
+					
 					else
 					{
 						gr.update();
@@ -243,6 +244,13 @@ public class CaveEscapeApp extends Application {
 							x = x - moveX;
 							
 						}
+						
+					}
+					double dFG = gTop - cBottom;
+					if(dFG> 129 && !isJumping && !isJumpingRight && !isJumpingLeft)
+					{
+						isFalling = true;
+						
 					}
 					
 					
@@ -294,6 +302,17 @@ public class CaveEscapeApp extends Application {
 						y = heroY;
 						velocityY = 0.0;
 						isJumpingRight = false;
+					}
+				}
+				if(isFalling)
+				{
+					if(dFG>80)
+					{
+						y += 10;
+					}
+					else
+					{
+						isFalling = false;
 					}
 				}
 				objects.get(0).setY(y);

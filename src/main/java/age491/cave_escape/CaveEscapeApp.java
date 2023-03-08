@@ -2,7 +2,7 @@ package age491.cave_escape;
 
 import java.io.File;
 import java.util.ArrayList;
-
+import java.util.Random;
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
@@ -17,7 +17,6 @@ import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
-
 public class CaveEscapeApp extends Application {
 	Pane root;
 	Scene scene;
@@ -27,6 +26,7 @@ public class CaveEscapeApp extends Application {
 	ArrayList<GameObject> ground = new ArrayList<GameObject>(); // stores all objects that create the ground
 	Factory factory;
 	Movement movement;
+	Random groundGenerator ;
 	
 	public static void main(String[] args)
 	{
@@ -67,13 +67,14 @@ public class CaveEscapeApp extends Application {
 		 * the ground consists of GroundGenerator objects that are used as 100x100 tiles to be placed on the ground level.
 		 * Later the tiles will be randomly generated to make the terrain of the level more different
 		 */
+		groundGenerator = new Random();
 		
-		for(int t=0; t<7; t++)
+		for(int t=0; t<8; t++)
 		{
 			double gx = t*100, gy = 500;
 			ground.add(factory.createProduct("groundLow", gx, gy));
 		}
-		ground.add(factory.createProduct("highGround", 700, 450)); // highGround y is 450
+		//ground.add(factory.createProduct("highGround", 700, 450)); // highGround y is 450
 		
 		
 		// Addition of a controllable character hero
@@ -359,6 +360,24 @@ public class CaveEscapeApp extends Application {
 		
 		
 		
+		
+	}
+	public void generateRandomLevel()
+	{
+		ground.add(factory.createProduct("groundLow", 0, 500));
+		for(int generator = 0; generator < 6; generator++)
+		{
+			int rand_int = groundGenerator.nextInt(2);
+			if(rand_int == 0)
+			{
+				
+			}
+			if(rand_int == 1)
+			{
+				
+			}
+		}
+		ground.add(factory.createProduct("groundLow", 700, 500));
 		
 	}
 

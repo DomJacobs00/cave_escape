@@ -155,11 +155,13 @@ public class CaveEscapeApp extends Application {
 				{
 					x = -20;
 					heroLaps++;
+					// move the tiles of the current level to a seperate arrayList so store if needed.
 				}
 				else if(heroX < -20)
 				{
 					x = 730;
 					heroLaps--;
+					// move the tiles back to the main arrayList 
 				}
 				
 				

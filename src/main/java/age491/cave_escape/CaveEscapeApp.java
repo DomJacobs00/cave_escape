@@ -365,16 +365,17 @@ public class CaveEscapeApp extends Application {
 	public void generateRandomLevel()
 	{
 		ground.add(factory.createProduct("groundLow", 0, 500));
-		for(int generator = 0; generator < 6; generator++)
+		for(int generator = 1; generator < 6; generator++)
 		{
 			int rand_int = groundGenerator.nextInt(2);
+			double gx = generator*100;
 			if(rand_int == 0)
 			{
-				
+				ground.add(factory.createProduct("groundLow", gx, 500));
 			}
 			if(rand_int == 1)
 			{
-				
+				ground.add(factory.createProduct("highGround", gx, 450));
 			}
 		}
 		ground.add(factory.createProduct("groundLow", 700, 500));

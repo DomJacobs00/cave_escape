@@ -24,6 +24,7 @@ public class CaveEscapeApp extends Application {
 	GraphicsContext gc;
 	ArrayList<GameObject> objects = new ArrayList<GameObject>(); // stores all the characters ( main character and enemies)
 	ArrayList<GameObject> ground = new ArrayList<GameObject>(); // stores all objects that create the ground
+	ArrayList<GameObject> usedGorund = new ArrayList<GameObject>();
 	Factory factory;
 	Movement movement;
 	Random groundGenerator ;
@@ -156,6 +157,9 @@ public class CaveEscapeApp extends Application {
 					x = -20;
 					heroLaps++;
 					// move the tiles of the current level to a seperate arrayList so store if needed.
+					//loop through the ground arrayList
+					//usedGorund.add()
+					//generateRandomLevel();
 				}
 				else if(heroX < -20)
 				{

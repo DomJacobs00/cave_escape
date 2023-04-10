@@ -167,7 +167,21 @@ public class CaveEscapeApp extends Application {
 						groundHistory.add(ground.get(i));
 					}
 					ground.clear();
-					generateRandomLevel();
+					/**
+					 * This checks if the ground level is already generated for that location 
+					 * if it is then the ground is updated from the groundHistory
+					 * else it is generated and added to the groundHistory
+					 */
+					int check = heroLaps * 8;
+					if (check <= groundHistory.size())
+					{
+						generateRandomLevel();
+					}
+					else
+					{
+						// handling the accessing of older levels
+					}
+					
 				}
 				else if(heroX < -20)
 				{

@@ -24,7 +24,7 @@ public class CaveEscapeApp extends Application {
 	GraphicsContext gc;
 	ArrayList<GameObject> objects = new ArrayList<GameObject>(); // stores all the characters ( main character and enemies)
 	ArrayList<GameObject> ground = new ArrayList<GameObject>(); // stores all objects that create the ground
-	ArrayList<GameObject> usedGorund = new ArrayList<GameObject>();
+	ArrayList<GameObject> groundHistory = new ArrayList<GameObject>(); // Keeps track of all created ground objects that can be accessed any time
 	Factory factory;
 	Movement movement;
 	Random groundGenerator ;
@@ -70,12 +70,13 @@ public class CaveEscapeApp extends Application {
 		 */
 		groundGenerator = new Random();
 		
+		// Creating the initial starting level
 		for(int t=0; t<8; t++)
 		{
 			double gx = t*100, gy = 500;
 			ground.add(factory.createProduct("groundLow", gx, gy));
 		}
-		//ground.add(factory.createProduct("highGround", 700, 450)); // highGround y is 450
+		
 		
 		
 		// Addition of a controllable character hero
@@ -151,15 +152,22 @@ public class CaveEscapeApp extends Application {
 				double heroHeight = objects.get(0).getHeight();
 				double groundTop = canvas.getHeight();
 				double heroX = objects.get(0).getX();
-				// Moves the game character to the beginning or the end of the screen accordingly
+				/**
+				 * Handling of the level design
+				 * Whenever the playable character reaches one of the corners of the level the ground arrayList is updated accordingly:
+				 * 1. if the character moves to the right corner, the current level is stored in the groundHistory arrayList for later access if needed and a new random level is created, replacing the old one
+				 * 2. if the character moves to the left corner, the current level is changed with one from groundHistory arrayList that is used with the heroLaps variable to determine the appropriate level
+				 */
 				if(heroX > 730)
 				{
 					x = -20;
 					heroLaps++;
-					// move the tiles of the current level to a seperate arrayList so store if needed.
-					//loop through the ground arrayList
-					//usedGorund.add()
-					//generateRandomLevel();
+					for(int i=0; i< 8; i++)
+					{
+						groundHistory.add(ground.get(i));
+					}
+					ground.clear();
+					generateRandomLevel();
 				}
 				else if(heroX < -20)
 				{
@@ -371,7 +379,7 @@ public class CaveEscapeApp extends Application {
 	public void generateRandomLevel()
 	{
 		ground.add(factory.createProduct("groundLow", 0, 500));
-		for(int generator = 1; generator < 6; generator++)
+		for(int generator = 1; generator < 7; generator++)
 		{
 			int rand_int = groundGenerator.nextInt(2);
 			double gx = generator*100;

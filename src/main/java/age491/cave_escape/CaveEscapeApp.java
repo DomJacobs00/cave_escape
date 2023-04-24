@@ -74,7 +74,9 @@ public class CaveEscapeApp extends Application {
 		for(int t=0; t<8; t++)
 		{
 			double gx = t*100, gy = 500;
-			ground.add(factory.createProduct("groundLow", gx, gy));
+			var tile = factory.createProduct("groundLow", gx, gy);
+			ground.add(tile);
+			groundHistory.add(tile);
 		}
 		
 		
@@ -162,24 +164,29 @@ public class CaveEscapeApp extends Application {
 				{
 					x = -20;
 					heroLaps++;
-					for(int i=0; i< 8; i++)
-					{
-						groundHistory.add(ground.get(i));
-					}
-					ground.clear();
+					
+					
 					/**
 					 * This checks if the ground level is already generated for that location 
 					 * if it is then the ground is updated from the groundHistory
 					 * else it is generated and added to the groundHistory
 					 */
 					int check = heroLaps * 8;
-					if (check <= groundHistory.size())
+					if (check >= groundHistory.size())
 					{
 						generateRandomLevel();
+						for(int i=0; i< 8; i++)
+						{
+							groundHistory.add(ground.get(i));
+						}
 					}
 					else
 					{
 						// handling the accessing of older levels
+						for (int i = 0; i < 8; i++)
+						{
+							ground.set(i, groundHistory.get(check + i));
+						}
 					}
 					
 				}
@@ -188,6 +195,11 @@ public class CaveEscapeApp extends Application {
 					x = 730;
 					heroLaps--;
 					// move the tiles back to the main arrayList 
+					int historyIndex = heroLaps *8;
+					for(int i = 0; i < 8; i++)
+					{
+						ground.set(i, groundHistory.get(historyIndex + i));
+					}
 				}
 				
 				
@@ -392,6 +404,7 @@ public class CaveEscapeApp extends Application {
 	}
 	public void generateRandomLevel()
 	{
+		ground.clear();
 		ground.add(factory.createProduct("groundLow", 0, 500));
 		for(int generator = 1; generator < 7; generator++)
 		{

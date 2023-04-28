@@ -84,7 +84,7 @@ public class CaveEscapeApp extends Application {
 		// Addition of a controllable character hero
 		objects.add(factory.createProduct("hero", x, y));
 		// Addition of an enemy for testing purposes
-		//objects.add(factory.createProduct("skeleton", 300, y));
+		//
 		
 		GameObject main = objects.get(0); // Accessing the character form the list of objects
 		
@@ -160,6 +160,7 @@ public class CaveEscapeApp extends Application {
 				 * 1. if the character moves to the right corner, the current level is stored in the groundHistory arrayList for later access if needed and a new random level is created, replacing the old one
 				 * 2. if the character moves to the left corner, the current level is changed with one from groundHistory arrayList that is used with the heroLaps variable to determine the appropriate level
 				 */
+				
 				if(heroX > 730)
 				{
 					x = -20;
@@ -199,6 +200,53 @@ public class CaveEscapeApp extends Application {
 					for(int i = 0; i < 8; i++)
 					{
 						ground.set(i, groundHistory.get(historyIndex + i));
+					}
+				}
+				
+				/**
+				 * Logic behind spawning and placing enemies
+				 * 
+				 * 1. Enemy is placed on 7th tile of the current level
+				 * 2. Enemies are spawned every 3 levels, with increasing difficulty
+				 * 3. When character is 1 tile away from the enemy, the fight sequence is initiated
+				 * 4. Using the inputs of keyboard, user will type in the answer to the question and if the answer is correct,
+				 * 		the enemy is removed and the movement is restored for the character, else, player looses his health points.
+				 */
+				
+				// placing an enemy every 3 levels
+				
+				if(heroLaps % 3 == 0 && heroLaps > 0 && objects.size() <2)
+				{
+					int skelY = 0;
+					GameObject tile = ground.get(6);
+					if(tile instanceof HighGround) // handles the y of enemy
+					{
+						skelY = 320;
+					}
+					else
+					{
+						skelY = 420;
+					}
+			
+					
+					objects.add(factory.createProduct("skeleton", 600, skelY));
+				}
+				else 
+				{
+					
+				}
+				// initiate fight (with radius of 1 tile)
+				if(objects.size()==2) // not working
+				{
+					double distanceX = objects.get(0).getX() - objects.get(1).getX();
+					if(distanceX >= -100  )
+					{
+						// Stop movement from the character and initiate the fight
+						System.out.println("Time to fight!");
+					}
+					else
+					{
+						// do nothing
 					}
 				}
 				
@@ -276,12 +324,12 @@ public class CaveEscapeApp extends Application {
 						double moveX = Math.min(Math.abs(distanceRight), Math.abs(distanceLeft));
 						if(distanceRight < distanceLeft)
 						{
-							System.out.println("Collision right");
+							//System.out.println("Collision right");
 							x = x + moveX;
 						}
 						else
 						{
-							System.out.println("Collision left");
+							//System.out.println("Collision left");
 							x = x - moveX;
 							
 						}
@@ -295,7 +343,7 @@ public class CaveEscapeApp extends Application {
 					}
 					
 					
-					System.out.println("Character bottom: " +  cBottom + "Ground Top: " + gTop + "Tile: "+ curTile);
+					//System.out.println("Character bottom: " +  cBottom + "Ground Top: " + gTop + "Tile: "+ curTile);
 					//	System.out.println("Tile number 7: Width: "+ ground.get(7).getWidth() +" Height: "+ ground.get(7).getWidth());
 				
 				double heroY = groundTop - heroHeight + 20; // placing the character on the ground level (needs to be changed)

@@ -6,12 +6,15 @@ import java.util.Random;
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
@@ -44,6 +47,11 @@ public class CaveEscapeApp extends Application {
 	boolean isWPressed = false, isAPressed = false, isDPressed = false;
 	double velocityY = 2.0;
 	int heroLaps = 0;
+	private boolean characterMovementEnabled = true;
+	private boolean fightSequence = false;
+	Label label1 = new Label("");
+	Label label2 = new Label("");
+	Label label3 = new Label("");
 	@Override
 	public void start(Stage primaryStage) throws Exception
 	{
@@ -62,6 +70,26 @@ public class CaveEscapeApp extends Application {
 		gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
 		factory = new Factory(gc);
 		movement = new Movement();
+		/**
+		 * Health Bar initialisation
+		 */
+		HealthBar healthBar = new HealthBar(5);
+		healthBar.setLayoutX(12);
+		healthBar.setLayoutY(15);
+		/**
+		 * Labels for text and questions
+		 * 
+		 */
+		label1.setStyle("-fx-font-size: 24; -fx-font-weight: bold; -fx-text-fill: blue;");
+		label2.setStyle("-fx-font-size: 24; -fx-font-weight: bold; -fx-text-fill: blue;");
+		label3.setStyle("-fx-font-size: 24; -fx-font-weight: bold; -fx-text-fill: blue;");
+		label1.setLayoutX(100);
+		label1.setLayoutY(200);
+		label2.setLayoutX(300);
+		label2.setLayoutY(200);
+		label3.setLayoutX(600);
+		label3.setLayoutY(200);
+		root.getChildren().addAll(label1, label2, label3, healthBar);
 		
 		/**
 		 * generating the ground for the level
@@ -90,58 +118,66 @@ public class CaveEscapeApp extends Application {
 		
 		// movement for the character ( will be moved to separate class maybe?)
 		
-		scene.setOnKeyPressed(event -> {    
+		scene.setOnKeyPressed(event -> {  
 			
-			if (event.getCode() == KeyCode.W && !isJumping) // w is binded to make the character jump (move verticaly up)
+			if(characterMovementEnabled)
 			{
-				isJumping = true;
-				isWPressed =true;
-				
-				y = movement.jump(y);
-				velocityY = jumpSpeed;
-				
+				if (event.getCode() == KeyCode.W && !isJumping) // w is binded to make the character jump (move verticaly up)
+				{
+					isJumping = true;
+					isWPressed =true;
+					
+					y = movement.jump(y);
+					velocityY = jumpSpeed;
+					
+				}
+				else if(event.getCode() == KeyCode.A) // movement to left
+				{
+					isAPressed= true;
+					main.setX(x -= moveSpeed);
+					// change image to moving left
+					main.movingLeft();
+					
+				}
+				else if(event.getCode() == KeyCode.D) // movement to right
+				{
+					isDPressed = true;
+					main.setX(x += moveSpeed);
+					main.movingRight();
+					
+					
+				}
+				if(isWPressed && isAPressed)
+				{
+					isJumpingLeft = true;
+					
+					
+				}
+				if(isWPressed && isDPressed)
+				{
+					isJumpingRight = true;
+					
+				}
 			}
-			else if(event.getCode() == KeyCode.A) // movement to left
-			{
-				isAPressed= true;
-				main.setX(x -= moveSpeed);
-				// change image to moving left
-				main.movingLeft();
 				
-			}
-			else if(event.getCode() == KeyCode.D) // movement to right
-			{
-				isDPressed = true;
-				main.setX(x += moveSpeed);
-				main.movingRight();
-				
-				
-			}
-			if(isWPressed && isAPressed)
-			{
-				isJumpingLeft = true;
-				
-				
-			}
-			if(isWPressed && isDPressed)
-			{
-				isJumpingRight = true;
-				
-			}	
 		});
 		scene.setOnKeyReleased(event ->{
-			if (event.getCode() == KeyCode.W)
+			if(characterMovementEnabled)
 			{
-				isWPressed = false;
+				if (event.getCode() == KeyCode.W)
+				{
+					isWPressed = false;
+				}
+				if (event.getCode() == KeyCode.A)
+				{
+					isAPressed = false;
+				}
+				if (event.getCode() == KeyCode.D)
+				{
+					isDPressed = false;
+				}
 			}
-			if (event.getCode() == KeyCode.A)
-			{
-				isAPressed = false;
-			}
-			if (event.getCode() == KeyCode.D)
-			{
-				isDPressed = false;
-			}
+			
 		
 		});
 		AnimationTimer timer = new AnimationTimer()
@@ -157,10 +193,18 @@ public class CaveEscapeApp extends Application {
 				/**
 				 * Handling of the level design
 				 * Whenever the playable character reaches one of the corners of the level the ground arrayList is updated accordingly:
-				 * 1. if the character moves to the right corner, the current level is stored in the groundHistory arrayList for later access if needed and a new random level is created, replacing the old one
-				 * 2. if the character moves to the left corner, the current level is changed with one from groundHistory arrayList that is used with the heroLaps variable to determine the appropriate level
+				 * 1. When the level layer is 0, the tutorial notes are displayed
+				 * 2. if the character moves to the right corner, the current level is stored in the groundHistory arrayList for later access if needed and a new random level is created, replacing the old one
+				 * 3. if the character moves to the left corner, the current level is changed with one from groundHistory arrayList that is used with the heroLaps variable to determine the appropriate level
 				 */
-				
+				if (heroLaps == 0)
+				{
+					label1.setText("Use W A S D to move.\n Your health is displayed at the top");
+				}
+				else
+				{
+					label1.setText("");
+				}
 				if(heroX > 730)
 				{
 					x = -20;
@@ -239,10 +283,13 @@ public class CaveEscapeApp extends Application {
 				if(objects.size()==2) // not working
 				{
 					double distanceX = objects.get(0).getX() - objects.get(1).getX();
-					if(distanceX >= -100  )
+					System.out.println(distanceX);
+					if(distanceX == -100  )
 					{
 						// Stop movement from the character and initiate the fight
-						System.out.println("Time to fight!");
+						characterMovementEnabled = false;
+						fightSequence = true;
+						
 					}
 					else
 					{
@@ -250,7 +297,13 @@ public class CaveEscapeApp extends Application {
 					}
 				}
 				
-				
+				if(fightSequence) 
+				{
+					
+					fight();
+					
+					
+				}
 				// drawing the ground for the level
 				for(GameObject gr:ground)
 				{
@@ -468,6 +521,14 @@ public class CaveEscapeApp extends Application {
 			}
 		}
 		ground.add(factory.createProduct("groundLow", 700, 500));
+		
+	}
+	public void fight()
+	{
+		// display the math question
+		MathQuestionsGenerator generator = new MathQuestionsGenerator(1);
+		label3.setText(generator.getQuestion());
+		// input listener
 		
 	}
 

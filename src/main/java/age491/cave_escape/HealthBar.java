@@ -1,30 +1,35 @@
 package age491.cave_escape;
+import javafx.geometry.Pos;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
+
 
 public class HealthBar extends HBox {
-	private Rectangle healthBar;
-	private double maxWidth;
-	private double maxHeight;
-	
-	public HealthBar(double width, double height, Color color)
-	{
-		maxWidth = width;
-		maxHeight  = height;
-		
-		healthBar = new Rectangle(maxWidth, maxHeight);
-		healthBar.setFill(color);
-		
-		this.getChildren().add(healthBar);
-		
-		
-	}
-	
-	public void updateHealth(double healthPercentage)
-	{
-		double newWidth = maxWidth * healthPercentage;
-		healthBar.setWidth(newWidth);
-	}
-}
 
+	Image heartfull = new Image(HealthBar.class.getResource("heartFull.png").toExternalForm());
+	Image heartEmpty = new Image(HealthBar.class.getResource("heartEmpty.png").toExternalForm());
+	
+	
+	public HealthBar(int numberOfHearts)
+	{
+		super(10);//setting spacing to 10px
+		setAlignment(Pos.TOP_LEFT); //sets alignment of the box
+		//loading the full heart images to display full HP
+		initHealth();
+		 
+	}
+	public void initHealth()
+	{
+		for (int i=0; i < 5; i++)
+		{
+			ImageView healthImageView = new ImageView(heartfull);
+			getChildren().add(healthImageView);
+		}
+	}
+	public void updateHealth(int health)
+	{
+		
+	}
+
+}

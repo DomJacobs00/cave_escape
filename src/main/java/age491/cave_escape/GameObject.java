@@ -10,6 +10,7 @@ public class GameObject {
 	protected int height;
 	protected int width;
 	protected int health;
+	protected int inventory;
 	
 	public GameObject(double x, double y, GraphicsContext gc)
 	{
@@ -82,5 +83,13 @@ public class GameObject {
 	{
 		return health;
 		
+	}
+	public void setInventory(int number)
+	{
+		inventory = number;
+	}
+	public int getInventory()
+	{
+		return inventory;
 	}
 }

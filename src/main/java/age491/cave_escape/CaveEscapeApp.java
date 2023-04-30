@@ -109,6 +109,7 @@ public class CaveEscapeApp extends Application {
 		// Addition of a controllable character hero
 		objects.add(factory.createProduct("hero", x, y));
 		objects.get(0).setHealth(5); // sets movable charachter's health to 5(full)
+		objects.get(0).setInventory(0);
 		
 		/**
 		 * Health Bar initialisation
@@ -205,6 +206,14 @@ public class CaveEscapeApp extends Application {
 				{
 					label1.setText("Use W A S D to move.\n Your health is displayed at the top");
 				}
+				else if(heroLaps == 1)
+				{
+					label1.setText("To progress in the game \nMath will come in handy!\nDefeat the skeletons to win!");
+				}
+				else if(heroLaps == 2)
+				{
+					label1.setText("Answer wrong and you loose a heart!\n Loose all hearts and you start over!");
+				}
 				else
 				{
 					label1.setText("");
@@ -213,7 +222,7 @@ public class CaveEscapeApp extends Application {
 				{
 					x = -20;
 					heroLaps++;
-					
+					fightSequence = false;
 					
 					/**
 					 * This checks if the ground level is already generated for that location 
@@ -263,8 +272,9 @@ public class CaveEscapeApp extends Application {
 				
 				// placing an enemy every 3 levels
 				
-				if(heroLaps % 3 == 0 && heroLaps > 0 && objects.size() <2)
+				if(heroLaps % 3 == 0 && heroLaps > 0 && objects.size() <2 && fightSequence == false)
 				{
+					fightSequence = true;
 					int skelY = 0;
 					GameObject tile = ground.get(6);
 					if(tile instanceof HighGround) // handles the y of enemy
@@ -279,10 +289,7 @@ public class CaveEscapeApp extends Application {
 					
 					objects.add(factory.createProduct("skeleton", 600, skelY));
 				}
-				else 
-				{
-					
-				}
+				
 				// initiate fight (with radius of 1 tile)
 				if(objects.size()==2) 
 				{
@@ -297,6 +304,11 @@ public class CaveEscapeApp extends Application {
 					if(objects.get(0).getHealth() !=5)
 					{
 						healthBar.updateHealth(objects.get(0).getHealth());
+					}
+				// if character health drops down to 0, game restarts
+					if(objects.get(0).getHealth()==0)
+					{
+						System.out.println("you lost");
 					}
 				// drawing the ground for the level
 				for(GameObject gr:ground)
@@ -503,7 +515,7 @@ public class CaveEscapeApp extends Application {
 		{
 			inRadius = true;
 			characterMovementEnabled = false;
-			fightSequence = true;
+			
 			fight();
 		}
 		
@@ -526,6 +538,20 @@ public class CaveEscapeApp extends Application {
 				if(isItCorrect)
 				{
 					System.out.println("correct answer!"); // remove the textField and the skeleton
+					label3.setText("");
+					root.getChildren().remove(input);
+					int newInventory = objects.get(0).getInventory() + 1;
+					objects.get(0).setInventory(newInventory);
+					try
+					{
+						objects.remove(1);
+					}
+					catch (IndexOutOfBoundsException e)
+					{
+						System.out.println("out of bounds");
+					}
+					characterMovementEnabled = true;
+					inRadius = false;
 				}
 				else
 				{
@@ -533,6 +559,7 @@ public class CaveEscapeApp extends Application {
 					
 					int newHealth = objects.get(0).getHealth() -1;
 					objects.get(0).setHealth(newHealth);
+					
 				}
 			}
 			catch (NumberFormatException e)

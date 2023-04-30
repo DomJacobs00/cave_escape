@@ -35,6 +35,7 @@ public class MathQuestionsGenerator {
 		}
 		
 		int operatorIndex = random.nextInt(2);
+		operator = operatorIndex == 0 ? '+' : '-';
 		correctAnswer = operator == '+' ? num1 + num2 : num1 - num2;
 	}
 	public String getQuestion()

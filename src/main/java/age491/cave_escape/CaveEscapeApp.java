@@ -11,6 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
@@ -48,6 +49,7 @@ public class CaveEscapeApp extends Application {
 	double velocityY = 2.0;
 	int heroLaps = 0;
 	private boolean characterMovementEnabled = true;
+	private boolean inRadius = false;
 	private boolean fightSequence = false;
 	Label label1 = new Label("");
 	Label label2 = new Label("");
@@ -70,12 +72,7 @@ public class CaveEscapeApp extends Application {
 		gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
 		factory = new Factory(gc);
 		movement = new Movement();
-		/**
-		 * Health Bar initialisation
-		 */
-		HealthBar healthBar = new HealthBar(5);
-		healthBar.setLayoutX(12);
-		healthBar.setLayoutY(15);
+		
 		/**
 		 * Labels for text and questions
 		 * 
@@ -89,7 +86,7 @@ public class CaveEscapeApp extends Application {
 		label2.setLayoutY(200);
 		label3.setLayoutX(600);
 		label3.setLayoutY(200);
-		root.getChildren().addAll(label1, label2, label3, healthBar);
+		root.getChildren().addAll(label1, label2, label3);
 		
 		/**
 		 * generating the ground for the level
@@ -111,14 +108,21 @@ public class CaveEscapeApp extends Application {
 		
 		// Addition of a controllable character hero
 		objects.add(factory.createProduct("hero", x, y));
-		// Addition of an enemy for testing purposes
-		//
+		objects.get(0).setHealth(5); // sets movable charachter's health to 5(full)
+		
+		/**
+		 * Health Bar initialisation
+		 */
+		HealthBar healthBar = new HealthBar(objects.get(0).getHealth());
+		healthBar.setLayoutX(12);
+		healthBar.setLayoutY(15);
+		root.getChildren().add(healthBar);
 		
 		GameObject main = objects.get(0); // Accessing the character form the list of objects
 		
 		// movement for the character ( will be moved to separate class maybe?)
 		
-		scene.setOnKeyPressed(event -> {  
+		scene.setOnKeyPressed(event -> {
 			
 			if(characterMovementEnabled)
 			{
@@ -280,30 +284,20 @@ public class CaveEscapeApp extends Application {
 					
 				}
 				// initiate fight (with radius of 1 tile)
-				if(objects.size()==2) // not working
+				if(objects.size()==2) 
 				{
-					double distanceX = objects.get(0).getX() - objects.get(1).getX();
-					System.out.println(distanceX);
-					if(distanceX == -100  )
+					// calculating the distance between the movable character and the enemy.
+					if(!inRadius)
 					{
-						// Stop movement from the character and initiate the fight
-						characterMovementEnabled = false;
-						fightSequence = true;
-						
+						 calculateDistance(objects.get(0).getX(),  objects.get(1).getX());
 					}
-					else
-					{
-						// do nothing
-					}
-				}
-				
-				if(fightSequence) 
-				{
-					
-					fight();
-					
 					
 				}
+				// checking the health of character
+					if(objects.get(0).getHealth() !=5)
+					{
+						healthBar.updateHealth(objects.get(0).getHealth());
+					}
 				// drawing the ground for the level
 				for(GameObject gr:ground)
 				{
@@ -466,33 +460,7 @@ public class CaveEscapeApp extends Application {
 				{
 					obj.update();	
 				}
-				
-				
-				/**
-				 * To have a educational part of the game more interesting the addition of math related questions can be added.
-				 * Using a premade collection of math equations and fileChooser it can be accomplished.		
-				 */
-							
-				//FileChooser fileChooser = new FileChooser();
-				//fileChooser.setTitle("Select Questions File");
-				//fileChooser.getExtensionFilters().addAll(
-				//    new ExtensionFilter("CSV Files", "*.csv"),
-				//    new ExtensionFilter("All Files", "*.*")
-				//);
-
-				//File selectedFile = fileChooser.showOpenDialog(stage);
-				//if (selectedFile != null) {
-				    // Read the selected file and load the questions
-			//	}
-
-						
-						
-					
-					
-					
-					
-				
-				
+			
 			}
 			
 		};
@@ -523,12 +491,60 @@ public class CaveEscapeApp extends Application {
 		ground.add(factory.createProduct("groundLow", 700, 500));
 		
 	}
+	/**
+	 * Method that calculates the distances between the movable character and an enemy.
+	 * Only activated when the enemy character is initiated and stoped when the distance is ....
+	 */
+	public void calculateDistance(double xCharacter, double xEnemy)
+	{
+		double distance = xCharacter - xEnemy;
+		
+		if (distance == -100)
+		{
+			inRadius = true;
+			characterMovementEnabled = false;
+			fightSequence = true;
+			fight();
+		}
+		
+	}
 	public void fight()
 	{
 		// display the math question
 		MathQuestionsGenerator generator = new MathQuestionsGenerator(1);
 		label3.setText(generator.getQuestion());
-		// input listener
+		TextField input = new TextField();
+		input.setLayoutX(600);
+		input.setLayoutY(300);
+		root.getChildren().add(input);
+		input.setOnAction(event ->{
+			String answer = input.getText();
+			try
+			{
+				int answerNumber = Integer.parseInt(answer);
+				boolean isItCorrect = generator.checkAnswer(answerNumber);
+				if(isItCorrect)
+				{
+					System.out.println("correct answer!"); // remove the textField and the skeleton
+				}
+				else
+				{
+					System.out.println("wrong answer!"); // remove a heart from HP
+					
+					int newHealth = objects.get(0).getHealth() -1;
+					objects.get(0).setHealth(newHealth);
+				}
+			}
+			catch (NumberFormatException e)
+			{
+				System.out.println("wrong answer!"); //remove a heart from HP
+				int newHealth = objects.get(0).getHealth() -1;
+				objects.get(0).setHealth(newHealth);
+			}
+		});
+		
+		
+		
 		
 	}
 

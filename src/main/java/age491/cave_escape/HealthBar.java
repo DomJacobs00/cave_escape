@@ -7,7 +7,7 @@ import javafx.scene.layout.HBox;
 
 public class HealthBar extends HBox {
 
-	Image heartfull = new Image(HealthBar.class.getResource("heartFull.png").toExternalForm());
+	Image heartFull = new Image(HealthBar.class.getResource("heartFull.png").toExternalForm());
 	Image heartEmpty = new Image(HealthBar.class.getResource("heartEmpty.png").toExternalForm());
 	
 	
@@ -23,12 +23,27 @@ public class HealthBar extends HBox {
 	{
 		for (int i=0; i < 5; i++)
 		{
-			ImageView healthImageView = new ImageView(heartfull);
+			ImageView healthImageView = new ImageView(heartFull);
 			getChildren().add(healthImageView);
 		}
 	}
 	public void updateHealth(int health)
 	{
+		// Clear the current health bar
+        getChildren().clear();
+
+        // Add the appropriate number of full hearts
+        for (int i = 0; i < health; i++) {
+            ImageView healthImageView = new ImageView(heartFull);
+            getChildren().add(healthImageView);
+        }
+
+        // Add empty hearts for the remaining health slots
+        int maxHealth = 5; // You can adjust this value based on your requirements
+        for (int i = health; i < maxHealth; i++) {
+            ImageView healthImageView = new ImageView(heartEmpty);
+            getChildren().add(healthImageView);
+        }
 		
 	}
 

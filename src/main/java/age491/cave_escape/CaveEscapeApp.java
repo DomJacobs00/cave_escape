@@ -12,6 +12,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
@@ -54,6 +55,7 @@ public class CaveEscapeApp extends Application {
 	Label label1 = new Label("");
 	Label label2 = new Label("");
 	Label label3 = new Label("");
+	
 	@Override
 	public void start(Stage primaryStage) throws Exception
 	{
@@ -110,6 +112,7 @@ public class CaveEscapeApp extends Application {
 		objects.add(factory.createProduct("hero", x, y));
 		objects.get(0).setHealth(5); // sets movable charachter's health to 5(full)
 		objects.get(0).setInventory(0);
+		GameObject main = objects.get(0); // Accessing the character form the list of objects
 		
 		/**
 		 * Health Bar initialisation
@@ -118,8 +121,15 @@ public class CaveEscapeApp extends Application {
 		healthBar.setLayoutX(12);
 		healthBar.setLayoutY(15);
 		root.getChildren().add(healthBar);
+		/**
+		 *  Progress indicator (the Book) initialisation
+		 */
+		ProgressBar progressBar = new ProgressBar();
+		progressBar.setLayoutX(15);
+		progressBar.setLayoutY(70);
+		root.getChildren().add(progressBar);
 		
-		GameObject main = objects.get(0); // Accessing the character form the list of objects
+		
 		
 		// movement for the character ( will be moved to separate class maybe?)
 		
@@ -268,8 +278,11 @@ public class CaveEscapeApp extends Application {
 				 * 3. When character is 1 tile away from the enemy, the fight sequence is initiated
 				 * 4. Using the inputs of keyboard, user will type in the answer to the question and if the answer is correct,
 				 * 		the enemy is removed and the movement is restored for the character, else, player looses his health points.
+				 * 	Additionally, if the user answers correctly a book will be added, to measure the progress.
 				 */
-				
+				//checking the progress
+					progressBar.updateProgress(objects.get(0).getInventory());
+					
 				// placing an enemy every 3 levels
 				
 				if(heroLaps % 3 == 0 && heroLaps > 0 && objects.size() <2 && fightSequence == false)
@@ -542,6 +555,7 @@ public class CaveEscapeApp extends Application {
 					root.getChildren().remove(input);
 					int newInventory = objects.get(0).getInventory() + 1;
 					objects.get(0).setInventory(newInventory);
+					
 					try
 					{
 						objects.remove(1);

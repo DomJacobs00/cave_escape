@@ -7,8 +7,8 @@ import javafx.scene.layout.HBox;
 
 public class HealthBar extends HBox {
 
-	Image heartFull = new Image(HealthBar.class.getResource("heartFull.png").toExternalForm());
-	Image heartEmpty = new Image(HealthBar.class.getResource("heartEmpty.png").toExternalForm());
+	Image heartFull = new Image(HealthBar.class.getResource("/heartFull.png").toExternalForm());
+	Image heartEmpty = new Image(HealthBar.class.getResource("/heartEmpty.png").toExternalForm());
 	
 	
 	public HealthBar(int numberOfHearts)

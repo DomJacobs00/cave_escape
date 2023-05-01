@@ -1,6 +1,5 @@
 package age491.cave_escape;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -16,16 +15,11 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyCodeCombination;
-import javafx.scene.input.KeyCombination;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.stage.FileChooser;
-import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
+
 public class CaveEscapeApp extends Application {
 	Pane root;
 	Scene scene;
@@ -40,7 +34,7 @@ public class CaveEscapeApp extends Application {
 	Factory factory;
 	Movement movement;
 	Random groundGenerator ;
-	
+	MusicHandler musicHandler;
 	
 	public static void main(String[] args)
 	{
@@ -81,20 +75,26 @@ public class CaveEscapeApp extends Application {
         startButton.setMinSize(190, 60); // Set the minimum size of the button
         startButton.setStyle("-fx-background-color: #FF5733; -fx-font-size: 20;"); // Set the button color and font size
 		
+        Button exitButton = new Button("Exit");
+		// Set the button size and color
+        exitButton.setMinSize(190, 60); // Set the minimum size of the button
+        exitButton.setStyle("-fx-background-color: #FF5733; -fx-font-size: 20;"); // Set the button color and font size
         // Game main image
-        Image mainImage = new Image(getClass().getResource("Title.png").toExternalForm());
+        Image mainImage = new Image(getClass().getResource("/Title.png").toExternalForm());
         ImageView imageView = new ImageView(mainImage);
         imageView.setFitWidth(600);
         imageView.setFitHeight(300);
         imageView.setPreserveRatio(true);
         
-        VBox startMenuPane = new VBox(20, imageView, startButton); // Add imageView and startButton to the startMenuPane
+        VBox startMenuPane = new VBox(20, imageView, startButton,exitButton); // Add imageView and startButton to the startMenuPane
         startMenuPane.setAlignment(Pos.CENTER);
         startMenuPane.setStyle("-fx-background-color: black; -fx-alignment: center;");
 		
         startMenuScene = new Scene(startMenuPane, 800, 600);
 		startMenuPane.setStyle("-fx-background-color: black;");
-		
+		String audioFilePath = "/Boss_Time.mp3";
+		musicHandler = new MusicHandler(audioFilePath);
+		musicHandler.play();
 		
 		
 		
@@ -102,22 +102,35 @@ public class CaveEscapeApp extends Application {
 		{
 			initGame();
 			primaryStage.setScene(scene);
+			musicHandler.stop();
+		});
+		exitButton.setOnAction(e->{
+			System.exit(0);
 		});
 	}
 	private void createGameOverScene(Stage primaryStage) {
         Label gameOverLabel = new Label("You lost.");
         gameOverLabel.setStyle("-fx-text-fill: white; -fx-font-size: 38;");
+        
+        ProgressBar highScore = new ProgressBar();
+        highScore.updateProgress(objects.get(0).getInventory());
+        
         Button mainMenuButton = new Button("Main menu");
         mainMenuButton.setMinSize(190, 60);
         mainMenuButton.setStyle("-fx-background-color: #FF5733; -fx-font-size: 20;"); // Set the button color and font size
-        VBox gameOverPane = new VBox(20,gameOverLabel, mainMenuButton);
+       
+        VBox gameOverPane = new VBox(20,gameOverLabel,highScore, mainMenuButton);
         gameOverPane.setStyle("-fx-background-color: black;");
         gameOverPane.setAlignment(Pos.CENTER);
         gameOverScene = new Scene(gameOverPane, 800, 600);
         
+        endGameSound();
+        
         mainMenuButton.setOnAction(e ->
         {
+        	resetGame();
         	primaryStage.setScene(startMenuScene);
+        	
         });
        
     }
@@ -137,9 +150,9 @@ public class CaveEscapeApp extends Application {
 		 * Labels for text and questions
 		 * 
 		 */
-		label1.setStyle("-fx-font-size: 24; -fx-font-weight: bold; -fx-text-fill: blue;");
-		label2.setStyle("-fx-font-size: 24; -fx-font-weight: bold; -fx-text-fill: blue;");
-		label3.setStyle("-fx-font-size: 24; -fx-font-weight: bold; -fx-text-fill: blue;");
+		label1.setStyle("-fx-font-size: 24; -fx-font-weight: bold; -fx-text-fill: white;");
+		label2.setStyle("-fx-font-size: 24; -fx-font-weight: bold; -fx-text-fill: white;");
+		label3.setStyle("-fx-font-size: 24; -fx-font-weight: bold; -fx-text-fill: white;");
 		label1.setLayoutX(100);
 		label1.setLayoutY(200);
 		label2.setLayoutX(300);
@@ -202,6 +215,7 @@ public class CaveEscapeApp extends Application {
 					
 					y = movement.jump(y);
 					velocityY = jumpSpeed;
+					jumpSound();
 					
 				}
 				else if(event.getCode() == KeyCode.A) // movement to left
@@ -224,12 +238,12 @@ public class CaveEscapeApp extends Application {
 				{
 					isJumpingLeft = true;
 					
-					
+					jumpSound();
 				}
 				if(isWPressed && isDPressed)
 				{
 					isJumpingRight = true;
-					
+					jumpSound();
 				}
 			}
 				
@@ -597,8 +611,21 @@ public class CaveEscapeApp extends Application {
 	}
 	public void fight()
 	{
-		// display the math question
-		MathQuestionsGenerator generator = new MathQuestionsGenerator(1);
+		// display the math question depending how far the user advanced
+		MathQuestionsGenerator generator;
+		if(heroLaps < 5)
+		{
+			generator = new MathQuestionsGenerator(1);
+		}
+		else if(heroLaps > 4 && heroLaps < 10)
+		{
+			generator = new MathQuestionsGenerator(2);
+		}
+		else
+		{
+			generator = new MathQuestionsGenerator(0);
+		}
+		
 		label3.setText(generator.getQuestion());
 		TextField input = new TextField();
 		input.setLayoutX(600);
@@ -612,6 +639,7 @@ public class CaveEscapeApp extends Application {
 				boolean isItCorrect = generator.checkAnswer(answerNumber);
 				if(isItCorrect)
 				{
+					defeatedSound();
 					System.out.println("correct answer!"); // remove the textField and the skeleton
 					label3.setText("");
 					root.getChildren().remove(input);
@@ -632,7 +660,7 @@ public class CaveEscapeApp extends Application {
 				else
 				{
 					System.out.println("wrong answer!"); // remove a heart from HP
-					
+					damageSound();
 					int newHealth = objects.get(0).getHealth() -1;
 					objects.get(0).setHealth(newHealth);
 					
@@ -643,6 +671,7 @@ public class CaveEscapeApp extends Application {
 				System.out.println("wrong answer!"); //remove a heart from HP
 				int newHealth = objects.get(0).getHealth() -1;
 				objects.get(0).setHealth(newHealth);
+				damageSound();
 			}
 		});
 		
@@ -650,5 +679,42 @@ public class CaveEscapeApp extends Application {
 		
 		
 	}
-
+	public void jumpSound()
+	{
+		String jump = "/mixkit-quick-jump-arcade-game-239.wav";
+		musicHandler = new MusicHandler(jump);
+		musicHandler.play();
+	}
+	public void damageSound()
+	{
+		String damageSound = "/mixkit-boxing-punch-2051.wav";
+		musicHandler = new MusicHandler(damageSound);
+		musicHandler.play();
+	}
+	public void endGameSound()
+	{
+		String endGameSound = "/mixkit-mechanical-crate-pick-up-3154.wav";
+		musicHandler = new MusicHandler(endGameSound);
+		musicHandler.play();
+	}
+	public void defeatedSound()
+	{
+		
+		String defeatedSound = "/mixkit-arcade-video-game-bonus-2044.wav";
+		musicHandler = new MusicHandler(defeatedSound);
+		musicHandler.play();
+	}
+	public void resetGame()
+	{
+		label3.setText("");
+    	characterMovementEnabled = true;
+    	inRadius = false;
+    	x = -20.0;
+    	y=430.0;
+    	root.getChildren().clear();
+    	heroLaps = 0;
+    	ground.clear();
+    	groundHistory.clear();
+    	objects.clear();
+	}
 }

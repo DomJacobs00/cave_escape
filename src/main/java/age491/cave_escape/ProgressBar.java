@@ -16,7 +16,7 @@ public class ProgressBar extends HBox {
 	{
 		progressLabel = new Label("x 0");
 		progressLabel.setStyle("-fx-font-size: 24; -fx-font-weight: bold; -fx-text-fill: white;");
-		Image book = new Image(ProgressBar.class.getResource("book.png").toExternalForm());
+		Image book = new Image(ProgressBar.class.getResource("/book.png").toExternalForm());
 		bookImage = new ImageView(book);
 		this.setAlignment(Pos.TOP_CENTER);
 		this.setSpacing(10);

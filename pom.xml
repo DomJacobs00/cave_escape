@@ -13,7 +13,12 @@
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
-            <version>13</version>
+            <version>17</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-media</artifactId>
+            <version>17</version>
         </dependency>
     </dependencies>
     <build>
@@ -37,6 +42,11 @@
                         <id>default-cli</id>
                         <configuration>
                             <mainClass>age491.cave_escape.App</mainClass>
+                            <launcher>launcher</launcher>
+                            <options>
+                    				<option>--add-modules</option>
+                    				<option>javafx.controls,javafx.media</option>
+                			</options>
                         </configuration>
                     </execution>
                 </executions>

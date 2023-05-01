@@ -10,14 +10,18 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
@@ -25,7 +29,10 @@ import javafx.stage.Stage;
 public class CaveEscapeApp extends Application {
 	Pane root;
 	Scene scene;
+	Scene startMenuScene;
+	Scene gameOverScene;
 	Canvas canvas;
+	
 	GraphicsContext gc;
 	ArrayList<GameObject> objects = new ArrayList<GameObject>(); // stores all the characters ( main character and enemies)
 	ArrayList<GameObject> ground = new ArrayList<GameObject>(); // stores all objects that create the ground
@@ -33,6 +40,7 @@ public class CaveEscapeApp extends Application {
 	Factory factory;
 	Movement movement;
 	Random groundGenerator ;
+	
 	
 	public static void main(String[] args)
 	{
@@ -56,19 +64,69 @@ public class CaveEscapeApp extends Application {
 	Label label2 = new Label("");
 	Label label3 = new Label("");
 	
+	
 	@Override
 	public void start(Stage primaryStage) throws Exception
 	{
+		startMenu(primaryStage);
+		primaryStage.setTitle("Cave Escape");
+		primaryStage.setScene(startMenuScene);
+		primaryStage.show();
+			
+	}
+	private void startMenu(Stage primaryStage)
+	{
+		Button startButton = new Button("Start");
+		// Set the button size and color
+        startButton.setMinSize(190, 60); // Set the minimum size of the button
+        startButton.setStyle("-fx-background-color: #FF5733; -fx-font-size: 20;"); // Set the button color and font size
 		
+        // Game main image
+        Image mainImage = new Image(getClass().getResource("Title.png").toExternalForm());
+        ImageView imageView = new ImageView(mainImage);
+        imageView.setFitWidth(600);
+        imageView.setFitHeight(300);
+        imageView.setPreserveRatio(true);
+        
+        VBox startMenuPane = new VBox(20, imageView, startButton); // Add imageView and startButton to the startMenuPane
+        startMenuPane.setAlignment(Pos.CENTER);
+        startMenuPane.setStyle("-fx-background-color: black; -fx-alignment: center;");
+		
+        startMenuScene = new Scene(startMenuPane, 800, 600);
+		startMenuPane.setStyle("-fx-background-color: black;");
+		
+		
+		
+		
+		startButton.setOnAction(e ->
+		{
+			initGame();
+			primaryStage.setScene(scene);
+		});
+	}
+	private void createGameOverScene(Stage primaryStage) {
+        Label gameOverLabel = new Label("You lost.");
+        gameOverLabel.setStyle("-fx-text-fill: white; -fx-font-size: 38;");
+        Button mainMenuButton = new Button("Main menu");
+        mainMenuButton.setMinSize(190, 60);
+        mainMenuButton.setStyle("-fx-background-color: #FF5733; -fx-font-size: 20;"); // Set the button color and font size
+        VBox gameOverPane = new VBox(20,gameOverLabel, mainMenuButton);
+        gameOverPane.setStyle("-fx-background-color: black;");
+        gameOverPane.setAlignment(Pos.CENTER);
+        gameOverScene = new Scene(gameOverPane, 800, 600);
+        
+        mainMenuButton.setOnAction(e ->
+        {
+        	primaryStage.setScene(startMenuScene);
+        });
+       
+    }
+	public void initGame()
+	{
 		root = new Pane();
 		scene = new Scene(root, 800,600);
 		canvas = new Canvas(800,600);
 		gc = canvas.getGraphicsContext2D();
-		
-		
-		
-		primaryStage.setScene(scene);
-		primaryStage.show();
 		root.getChildren().add(canvas);
 		gc.setFill(Color.BLACK);
 		gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
@@ -224,6 +282,11 @@ public class CaveEscapeApp extends Application {
 				{
 					label1.setText("Answer wrong and you loose a heart!\n Loose all hearts and you start over!");
 				}
+				else if(heroLaps < 0)
+				{
+					x = -20; // handles the character causing IndexOutOfBounds error
+					heroLaps = 0;
+				}
 				else
 				{
 					label1.setText("");
@@ -258,7 +321,7 @@ public class CaveEscapeApp extends Application {
 					}
 					
 				}
-				else if(heroX < -20)
+				else if(heroX < -20 && heroLaps > 0)
 				{
 					x = 730;
 					heroLaps--;
@@ -321,7 +384,10 @@ public class CaveEscapeApp extends Application {
 				// if character health drops down to 0, game restarts
 					if(objects.get(0).getHealth()==0)
 					{
-						System.out.println("you lost");
+						Stage primaryStage = (Stage) scene.getWindow();
+						createGameOverScene(primaryStage);
+						primaryStage.setScene(gameOverScene);
+						this.stop();
 					}
 				// drawing the ground for the level
 				for(GameObject gr:ground)
@@ -491,10 +557,6 @@ public class CaveEscapeApp extends Application {
 		};
 		
 		timer.start();
-		
-		
-		
-		
 	}
 	public void generateRandomLevel()
 	{

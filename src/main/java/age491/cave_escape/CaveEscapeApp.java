@@ -70,6 +70,7 @@ public class CaveEscapeApp extends Application {
 	}
 	private void startMenu(Stage primaryStage)
 	{
+		startMenuMusic();
 		Button startButton = new Button("Start");
 		// Set the button size and color
         startButton.setMinSize(190, 60); // Set the minimum size of the button
@@ -92,9 +93,7 @@ public class CaveEscapeApp extends Application {
 		
         startMenuScene = new Scene(startMenuPane, 800, 600);
 		startMenuPane.setStyle("-fx-background-color: black;");
-		String audioFilePath = "/Boss_Time.mp3";
-		musicHandler = new MusicHandler(audioFilePath);
-		musicHandler.play();
+		
 		
 		
 		
@@ -656,6 +655,7 @@ public class CaveEscapeApp extends Application {
 					}
 					characterMovementEnabled = true;
 					inRadius = false;
+					
 				}
 				else
 				{
@@ -663,6 +663,7 @@ public class CaveEscapeApp extends Application {
 					damageSound();
 					int newHealth = objects.get(0).getHealth() -1;
 					objects.get(0).setHealth(newHealth);
+					input.clear();
 					
 				}
 			}
@@ -672,12 +673,19 @@ public class CaveEscapeApp extends Application {
 				int newHealth = objects.get(0).getHealth() -1;
 				objects.get(0).setHealth(newHealth);
 				damageSound();
+				input.clear();
 			}
 		});
 		
 		
 		
 		
+	}
+	public void startMenuMusic()
+	{
+		String audioFilePath = "/Boss_Time.wav";
+		musicHandler = new MusicHandler(audioFilePath);
+		musicHandler.play();
 	}
 	public void jumpSound()
 	{
